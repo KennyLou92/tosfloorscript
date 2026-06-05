@@ -206,5 +206,10 @@ def get_single_story(floor_id):
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+import os
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    # 讓程式能自動讀取雲端環境分配的 Port，若在本地端執行則預設為 5000
+    port = int(os.environ.get("PORT", 5000))
+    # 必須將 host 改為 0.0.0.0，雲端平台才能對外公開網頁
+    app.run(host='0.0.0.0', port=port)
