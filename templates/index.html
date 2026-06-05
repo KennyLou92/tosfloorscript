@@ -70,7 +70,8 @@
     </div>
 
     <script>
-        const BASE_API = 'http://127.0.0.1:5000/api';
+        // 新的寫法（自動適應本地端與 Render 雲端環境）：
+        const BASE_API = window.location.origin + '/api';
         let currentLoadingId = null;
         
         // 暫存當前關卡的雙語 HTML
