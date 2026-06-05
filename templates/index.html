@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事劇本即時檢視器 (多語系版)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            display: flex; height: 100vh; background-color: #f5f5f7; color: #2c3e50;
+        }
+        #sidebar {
+            width: 300px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
+        }
+        #sidebar h2 { padding: 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
+        #floor-list { list-style: none; overflow-y: auto; flex: 1; }
+        #floor-list li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+        #floor-list li:hover { background-color: #f0f4f8; }
+        #floor-list li.active { background-color: #007aff; color: white; font-weight: bold; }
+        
+        #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
+        
+        /* 工具列：包含狀態與語系切換 */
+        #toolbar {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px;
+        }
+        #status { padding: 10px 15px; border-radius: 5px; font-weight: bold; flex: 1; text-align: left; }
+        .loading { background-color: #e1f5fe; color: #0288d1; }
+        .success { background-color: #e8f5e9; color: #388e3c; }
+        .error { background-color: #ffebee; color: #d32f2f; }
+        
+        /* 語系切換下拉選單 */
+        #lang-selector {
+            padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 5px;
+            border: 1px solid #007aff; color: #007aff; background-color: white; cursor: pointer; outline: none;
+        }
+        #lang-selector:hover { background-color: #f0f4f8; }
+
+        /* 故事內文 */
+        #story-viewer {
+            flex: 1; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px;
+            overflow-y: auto; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .story-section { margin-bottom: 35px; border-left: 4px solid #007aff; padding-left: 15px; }
+        .section-title { font-size: 15px; color: #007aff; margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
+        .dialog-row { margin-bottom: 16px; line-height: 1.8; }
+        .dialog-row-plain { margin-bottom: 16px; line-height: 1.8; color: #555; font-style: italic; background: #fafafa; padding: 6px 12px; border-radius: 4px; }
+        .speaker { font-weight: bold; color: #e67e22; margin-right: 8px; display: inline-block; }
+        .words { color: #2c3e50; }
+        .no-story { color: #95a5a6; text-align: center; margin-top: 50px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <h2>章節列表 (FloorId)</h2>
+        <ul id="floor-list"></ul>
+    </div>
+
+    <div id="content-area">
+        <div id="toolbar">
+            <div id="status" class="loading">正在連線 Python 後端並載入選單...</div>
+            <select id="lang-selector">
+                <option value="zh">繁體中文 (ZH)</option>
+                <option value="en">English (EN)</option>
+            </select>
+        </div>
+        <div id="story-viewer">請從左側選擇一個章節來閱讀故事劇本。</div>
+    </div>
+
+    <script>
+        const BASE_API = 'http://127.0.0.1:5000/api';
+        let currentLoadingId = null;
+        
+        // 暫存當前關卡的雙語 HTML
+        let currentStories = { zh: '', en: '' }; 
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFloorList();
+            
+            // 監聽語系切換事件
+            document.getElementById('lang-selector').addEventListener('change', (e) => {
+                renderCurrentStory(e.target.value);
+            });
+        });
+
+        async function loadFloorList() {
+            const statusDiv = document.getElementById('status');
+            const floorList = document.getElementById('floor-list');
+            try {
+                const response = await fetch(`${BASE_API}/floors`);
+                const result = await response.json();
+                if (result.success) {
+                    statusDiv.className = 'success';
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。可點選下方並隨時切換語系。`;
+                    result.floors.forEach((floorId, index) => {
+                        const li = document.createElement('li');
+                        li.innerText = floorId;
+                        li.addEventListener('click', () => {
+                            document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
+                            li.classList.add('active');
+                            loadStoryFromServer(floorId);
+                        });
+                        floorList.appendChild(li);
+                        if(index === 0) li.click();
+                    });
+                } else { throw new Error(result.error); }
+            } catch (error) {
+                statusDiv.className = 'error';
+                statusDiv.innerText = `初始化失敗：${error.message}`;
+            }
+        }
+
+        async function loadStoryFromServer(floorId) {
+            const viewer = document.getElementById('story-viewer');
+            currentLoadingId = floorId;
+            viewer.innerHTML = `<div class="no-story">⏳ 正在從官方即時下載關卡 [ ${floorId} ] 的中英文劇本...</div>`;
+            
+            try {
+                const response = await fetch(`${BASE_API}/story/${floorId}`);
+                const result = await response.json();
+                
+                if (currentLoadingId !== floorId) return;
+
+                if (result.success) {
+                    currentStories.zh = result.zh;
+                    currentStories.en = result.en;
+                    
+                    // 根據當前下拉選單選擇的語系進行渲染
+                    const currentLang = document.getElementById('lang-selector').value;
+                    renderCurrentStory(currentLang);
+                } else { throw new Error(result.error); }
+            } catch (error) {
+                if (currentLoadingId !== floorId) return;
+                viewer.innerHTML = `<div class="no-story" style="color:#d32f2f;">❌【讀取失敗】<br><br>${error.message}</div>`;
+            }
+        }
+
+        function renderCurrentStory(lang) {
+            const viewer = document.getElementById('story-viewer');
+            if (currentStories[lang]) {
+                viewer.innerHTML = currentStories[lang];
+                viewer.scrollTop = 0;
+            } else {
+                viewer.innerHTML = `<div class="no-story">(該章節無此語言劇本內容)</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
