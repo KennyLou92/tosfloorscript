@@ -8,7 +8,7 @@ from Crypto.Cipher import ChaCha20
 app = Flask(__name__)
 CORS(app)
 
-DEFAULT_URL = "https://cf.tosconfig.com/floorScripts/com.madhead.tos.zh/a9b16544cfacde8d048f5d86439a8ca4-index.data"
+DEFAULT_URL = "https://cf.tosconfig.com/floorScripts/com.madhead.tos.zh/a40eade4cca480f3789f016adbd65ba8-index.data"
 encoded_key = "Hw0QCtCMy2SQ91gDNh813jeKXSGfrRvzN1UOIPKIRKY="
 KEY = base64.b64decode(encoded_key)
 
