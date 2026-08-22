@@ -1,6 +1,5 @@
 import base64
 import json
-import os
 import requests
 from flask import Flask, jsonify, render_template
 from flask_cors import CORS
@@ -70,25 +69,29 @@ def parse_string_script(script_str):
 
 def extract_dialogs_recursive(data, lang="zh"):
     """
-    處理後期 Dict/List 嵌套格式
+    處理後期 Dict/List 嵌套格式 (已修正：支援動態提取中英文欄位)
     """
     results = []
     
+    # 依據語系決定讀取哪一個 JSON 鍵值
     dialog_key = "dialogEn" if lang == "en" else "dialog"
     name_key = "displayNameEn" if lang == "en" else "displayName"
     
     if isinstance(data, dict):
+        # 只要該物件內含有指定的對話內容，不論中英文都撈出來
         if dialog_key in data and data[dialog_key]:
             name = str(data.get(name_key, "")).strip()
             dialog = str(data[dialog_key]).strip()
             dialog_html = format_text_to_html(dialog)
             
+            # 處理全形空格或空白旁白
             if name == "" or name == "  " or name == " ":
                 results.append(f'<div class="dialog-row-plain">{dialog_html}</div>')
             else:
                 name_html = format_text_to_html(name)
                 results.append(f'<div class="dialog-row"><span class="speaker">{name_html}:</span> <span class="words">{dialog_html}</span></div>')
         else:
+            # 繼續深度遞迴搜尋
             for key, value in data.items():
                 results.extend(extract_dialogs_recursive(value, lang))
                 
@@ -107,8 +110,10 @@ def build_html_from_fields(container, fields_config, lang="zh"):
             field_lines = []
             
             if isinstance(field_data, str):
+                # 如果是早期字串型態，直接走字串解析
                 field_lines = parse_string_script(field_data)
             else:
+                # 如果是後期 List 嵌套型態，走動態語系的深度遞迴
                 field_lines = extract_dialogs_recursive(field_data, lang)
                 
             if field_lines:
@@ -125,35 +130,8 @@ def home():
 def get_floors():
     try:
         init_index_data()
-        
-        # 1. 在 Python 端讀取 stagelist.json 並轉成 dict 對應表
-        stage_names = {}
-        # 自動判定同目錄下的 stagelist.json 或 stagelist.json (相容大小寫)
-        json_path = 'stagelist.json' if os.path.exists('stagelist.json') else 'stagelist.json'
-        
-        if os.path.exists(json_path):
-            try:
-                with open(json_path, 'r', encoding='utf-8') as f:
-                    stage_data = json.load(f)
-                    for item in stage_data:
-                        fid = str(item.get("floorid", "")).strip()
-                        name = str(item.get("名稱", "")).strip()
-                        if fid:
-                            stage_names[fid] = name
-            except Exception as e:
-                print(f"讀取 stagelist.json 發生錯誤: {e}")
-
-        # 2. 組合 floorId 與對應關卡名稱
-        floors_info = []
-        for item in cached_floor_scripts:
-            fid = str(item["floorId"]).strip()
-            name = stage_names.get(fid, "")
-            floors_info.append({
-                "floorId": fid,
-                "name": name
-            })
-
-        return jsonify({"success": True, "floors": floors_info})
+        floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
+        return jsonify({"success": True, "floors": floor_ids})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -180,10 +158,12 @@ def get_single_story(floor_id):
         res.raise_for_status()
         story_data = res.json()
         
+        # 穿透到 stageDrama
         drama_container = story_data.get("stageDrama", {})
         if not drama_container or not isinstance(drama_container, dict):
             drama_container = story_data
             
+        # 中文版欄位配置 (包含舊版單數、新版複數型態)
         zh_fields = [
             ("enterScript", "🎬 [進入關卡劇情]"),
             ("startScript", "📌 [開場劇情]"), ("startScripts", "📌 [開場劇情]"),
@@ -194,6 +174,9 @@ def get_single_story(floor_id):
             ("gameOverScript", "💀 [遊戲結束劇情]"), ("gameOverScripts", "💀 [遊戲結束劇情]")
         ]
         
+        # 英文版欄位配置
+        # 註：新版(如10313)它的複數欄位依然叫 "startScripts"，只是裡面的 key 變成了 dialogEn
+        # 舊版(如2987)則是獨立欄位叫 "startScript_en"。這裡我們兩個都列入阻截！
         en_fields = [
             ("enterScript_en", "🎬 [Stage Entrance]"), ("enterScript", "🎬 [Stage Entrance]"),
             ("startScript_en", "📌 [Opening Story]"), ("startScripts", "📌 [Opening Story]"),
@@ -204,9 +187,11 @@ def get_single_story(floor_id):
             ("gameOverScript_en", "💀 [Game Over Story]"), ("gameOverScripts", "💀 [Game Over Story]")
         ]
         
+        # 生成 HTML 文本
         zh_html = build_html_from_fields(drama_container, zh_fields, lang="zh")
         en_html = build_html_from_fields(drama_container, en_fields, lang="en")
         
+        # 兜底防空字串機制
         if not zh_html:
             zh_html = '<div class="no-story">(該章節無中文對話劇本內容)</div>'
         if not en_html:
@@ -221,6 +206,10 @@ def get_single_story(floor_id):
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+import os
+
 if __name__ == '__main__':
+    # 讓程式能自動讀取雲端環境分配的 Port，若在本地端執行則預設為 5000
     port = int(os.environ.get("PORT", 5000))
+    # 必須將 host 改為 0.0.0.0，雲端平台才能對外公開網頁
     app.run(host='0.0.0.0', port=port)
