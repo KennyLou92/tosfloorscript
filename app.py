@@ -149,20 +149,39 @@ def get_floors():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/story/<floor_id>', methods=['GET'])
-def get_single_story(floor_id):
+@app.route('/api/floors', methods=['GET'])
+def get_floors():
     try:
         init_index_data()
-        search_id = str(floor_id).strip()
+        floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
         
-        target_item = None
-        for x in cached_floor_scripts:
-            if str(x.get("floorId", "")).strip() == search_id:
-                target_item = x
-                break
-                
-        if not target_item:
-            return jsonify({"success": False, "error": f"找不到章節 ID: {search_id}"}), 404
+        stage_names = {}
+        # 自動尋找 JSON 檔案
+        json_path = 'stageList.json' if os.path.exists('stageList.json') else 'stagelist.json'
+        
+        print(f"--- [除錯] 檢查 JSON 路徑: {json_path}, 是否存在: {os.path.exists(json_path)} ---")
+        
+        if os.path.exists(json_path):
+            try:
+                with open(json_path, 'r', encoding='utf-8') as f:
+                    stage_data = json.load(f)
+                    for item in stage_data:
+                        fid = str(item.get("floorid", "")).strip()
+                        name = str(item.get("名稱", "")).strip()
+                        if fid:
+                            stage_names[fid] = name
+                print(f"--- [除錯] 成功載入 stageList.json，共有 {len(stage_names)} 筆名稱對照 ---")
+            except Exception as e:
+                print(f"--- [除錯] 讀取 stageList.json 失敗: {e} ---")
+
+        return jsonify({
+            "success": True, 
+            "floors": floor_ids,
+            "names": stage_names,
+            "loaded_count": len(stage_names)  # 傳回讀取到的名稱數量
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
             
         md5 = target_item["md5"]
         actual_id = target_item["floorId"]

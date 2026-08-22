@@ -86,13 +86,13 @@
                 const result = await response.json();
                 if (result.success) {
                     statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。可點選下方並隨時切換語系。`;
+                    const nameCount = result.loaded_count || 0;
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章 (已載入 ${nameCount} 個關卡名稱)。`;
                     
                     const names = result.names || {};
                     result.floors.forEach((floorId, index) => {
                         const li = document.createElement('li');
                         
-                        // 若 names 字典內有名稱則顯示 "ID - 名稱"，否則僅顯示 ID
                         const name = names[floorId];
                         li.innerText = name ? `${floorId} - ${name}` : floorId;
 
