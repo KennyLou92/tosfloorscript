@@ -134,9 +134,9 @@ def get_floors():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(base_dir, 'templates')
         
-        # 1. 讀取關卡名稱檔 (floorList.json)
+        # 1. 讀取關卡名稱檔 (floorlist.json)
         floor_names = {}
-        floorlist_path = os.path.join(templates_dir, 'floorList.json')
+        floorlist_path = os.path.join(templates_dir, 'floorlist.json')
         if os.path.exists(floorlist_path):
             try:
                 with open(floorlist_path, 'r', encoding='utf-8') as f:
@@ -146,45 +146,32 @@ def get_floors():
                         name = str(item.get("名稱", "")).strip()
                         if fid: floor_names[fid] = name
             except Exception as e:
-                print(f"讀取 floorList.json 錯誤: {e}")
+                print(f"讀取 floorlist.json 錯誤: {e}")
 
-        # 2. 處理已知/新關卡紀錄 (known_floors.json)
+        # 2. 讀取已知關卡紀錄 (known_floors.json)
         known_path = os.path.join(templates_dir, 'known_floors.json')
         known_floors = set()
         
         if os.path.exists(known_path):
             try:
                 with open(known_path, 'r', encoding='utf-8') as f:
-                    known_floors = set(json.load(f))
+                    known_floors = set(str(x).strip() for x in json.load(f))
             except Exception as e:
                 print(f"讀取 known_floors.json 錯誤: {e}")
 
-        # 檢查是否有新關卡
-        new_floors = []
-        for fid in current_floor_ids:
-            if fid not in known_floors:
-                new_floors.append(fid)
-                known_floors.add(fid)
+        # 找出不在 known_floors 裡面的新關卡
+        new_floors = [fid for fid in current_floor_ids if fid not in known_floors]
 
-        # 如果發現新關卡，自動回寫更新 known_floors.json
-        if new_floors:
-            try:
-                os.makedirs(templates_dir, exist_ok=True)
-                with open(known_path, 'w', encoding='utf-8') as f:
-                    json.dump(list(known_floors), f, ensure_ascii=False, indent=2)
-                print(f"發現並紀錄了 {len(new_floors)} 個新關卡！")
-            except Exception as e:
-                print(f"寫入 known_floors.json 失敗: {e}")
+        print(f"--- [除錯] 當前關卡數: {len(current_floor_ids)}, 已知關卡數: {len(known_floors)}, 新關卡數: {len(new_floors)} ---")
 
         return jsonify({
             "success": True, 
             "floors": current_floor_ids,
             "names": floor_names,
-            "new_floors": new_floors  # 將這批是 NEW 的 floorId 清單傳給前端
+            "new_floors": new_floors
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
 @app.route('/api/story/<floor_id>', methods=['GET'])
 def get_story(floor_id):
     try:
