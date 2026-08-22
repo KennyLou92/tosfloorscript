@@ -81,20 +81,42 @@
         async function loadFloorList() {
             const statusDiv = document.getElementById('status');
             const floorList = document.getElementById('floor-list');
+            
             try {
+                // 1. 先讀取我們剛才開放的 /stagelist.json
+                let stageMapping = {};
+                try {
+                    const stageRes = await fetch('/stagelist.json');
+                    if (stageRes.ok) {
+                        const stageData = await stageRes.json();
+                        stageData.forEach(item => {
+                            const fid = String(item.floorid || '').trim();
+                            const name = String(item.名稱 || '').trim();
+                            if (fid) stageMapping[fid] = name;
+                        });
+                        console.log("成功解析 stagelist.json：", stageMapping);
+                    } else {
+                        console.warn("無法取得 stagelist.json，狀態碼：", stageRes.status);
+                    }
+                } catch (e) {
+                    console.warn("讀取 stagelist.json 失敗：", e);
+                }
+
+                // 2. 載入後端 API 的 floors 列表
                 const response = await fetch(`${BASE_API}/floors`);
                 const result = await response.json();
+                
                 if (result.success) {
+                    const loadedCount = Object.keys(stageMapping).length;
                     statusDiv.className = 'success';
-                    const nameCount = result.loaded_count || 0;
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章 (已載入 ${nameCount} 個關卡名稱)。`;
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章 (對照名稱: ${loadedCount} 筆)。`;
                     
-                    const names = result.names || {};
                     result.floors.forEach((floorId, index) => {
                         const li = document.createElement('li');
                         
-                        const name = names[floorId];
-                        li.innerText = name ? `${floorId} - ${name}` : floorId;
+                        // 比對映射表
+                        const stageName = stageMapping[String(floorId).trim()];
+                        li.innerText = stageName ? `${floorId} - ${stageName}` : floorId;
 
                         li.addEventListener('click', () => {
                             document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));

@@ -132,9 +132,9 @@ def get_floors():
         
         # 設定包含 templates 資料夾在內的所有可能路徑與大小寫組合
         possible_paths = [
-            os.path.join(base_dir, 'templates', 'stageList.json'),
             os.path.join(base_dir, 'templates', 'stagelist.json'),
-            os.path.join(base_dir, 'stageList.json'),
+            os.path.join(base_dir, 'templates', 'stagelist.json'),
+            os.path.join(base_dir, 'stagelist.json'),
             os.path.join(base_dir, 'stagelist.json')
         ]
         
@@ -173,7 +173,7 @@ def get_floors():
         
         stage_names = {}
         # 自動尋找 JSON 檔案
-        json_path = 'stageList.json' if os.path.exists('stageList.json') else 'stagelist.json'
+        json_path = 'stagelist.json' if os.path.exists('stagelist.json') else 'stagelist.json'
         
         print(f"--- [除錯] 檢查 JSON 路徑: {json_path}, 是否存在: {os.path.exists(json_path)} ---")
         
@@ -186,9 +186,9 @@ def get_floors():
                         name = str(item.get("名稱", "")).strip()
                         if fid:
                             stage_names[fid] = name
-                print(f"--- [除錯] 成功載入 stageList.json，共有 {len(stage_names)} 筆名稱對照 ---")
+                print(f"--- [除錯] 成功載入 stagelist.json，共有 {len(stage_names)} 筆名稱對照 ---")
             except Exception as e:
-                print(f"--- [除錯] 讀取 stageList.json 失敗: {e} ---")
+                print(f"--- [除錯] 讀取 stagelist.json 失敗: {e} ---")
 
         return jsonify({
             "success": True, 
@@ -198,6 +198,15 @@ def get_floors():
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+from flask import send_from_directory
+
+@app.route('/stagelist.json')
+def serve_stagelist():
+    # 強制指名到 templates 資料夾讀取 JSON 檔案傳給前端
+    templates_dir = os.path.join(app.root_path, 'templates')
+    filename = 'stagelist.json' if os.path.exists(os.path.join(templates_dir, 'stagelist.json')) else 'stagelist.json'
+    return send_from_directory(templates_dir, filename)
             
         md5 = target_item["md5"]
         actual_id = target_item["floorId"]
