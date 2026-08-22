@@ -11,72 +11,43 @@
             display: flex; height: 100vh; background-color: #f5f5f7; color: #2c3e50;
         }
         #sidebar {
-            width: 320px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
+            width: 300px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
         }
-        #sidebar h2 { padding: 15px 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
-        
-        /* 狀態提示區塊樣式 */
-        .upload-section {
-            padding: 12px 20px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .upload-section label { font-size: 12px; font-weight: bold; color: #666; }
-        
+        #sidebar h2 { padding: 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
         #floor-list { list-style: none; overflow-y: auto; flex: 1; }
-        #floor-list li { 
-            padding: 12px 15px; 
-            cursor: pointer; 
-            border-bottom: 1px solid #f0f0f0; 
-            transition: background 0.2s; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        #floor-list li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
         #floor-list li:hover { background-color: #f0f4f8; }
         #floor-list li.active { background-color: #007aff; color: white; font-weight: bold; }
         
-        .floor-info { display: flex; flex-direction: column; gap: 2px; }
-        .floor-id { font-size: 12px; color: #8e8e93; }
-        #floor-list li.active .floor-id { color: #e5f1ff; }
-        .floor-name { font-size: 15px; }
-
-        /* NEW 標籤樣式 */
-        .badge-new {
-            background-color: #ff3b30;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 10px;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
-        }
-        
         #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
-        #toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; }
+        
+        /* 工具列：包含狀態與語系切換 */
+        #toolbar {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px;
+        }
         #status { padding: 10px 15px; border-radius: 5px; font-weight: bold; flex: 1; text-align: left; }
         .loading { background-color: #e1f5fe; color: #0288d1; }
         .success { background-color: #e8f5e9; color: #388e3c; }
         .error { background-color: #ffebee; color: #d32f2f; }
         
+        /* 語系切換下拉選單 */
         #lang-selector {
             padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 5px;
             border: 1px solid #007aff; color: #007aff; background-color: white; cursor: pointer; outline: none;
         }
         #lang-selector:hover { background-color: #f0f4f8; }
 
+        /* 故事內文 */
         #story-viewer {
             flex: 1; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px;
             overflow-y: auto; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+        .story-section { margin-bottom: 35px; border-left: 4px solid #007aff; padding-left: 15px; }
+        .section-title { font-size: 15px; color: #007aff; margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
+        .dialog-row { margin-bottom: 16px; line-height: 1.8; }
+        .dialog-row-plain { margin-bottom: 16px; line-height: 1.8; color: #555; font-style: italic; background: #fafafa; padding: 6px 12px; border-radius: 4px; }
+        .speaker { font-weight: bold; color: #e67e22; margin-right: 8px; display: inline-block; }
+        .words { color: #2c3e50; }
         .no-story { color: #95a5a6; text-align: center; margin-top: 50px; font-style: italic; }
     </style>
 </head>
@@ -84,11 +55,6 @@
 
     <div id="sidebar">
         <h2>章節列表 (FloorId)</h2>
-        <!-- 顯示 JSON 自動讀取狀態 -->
-        <div class="upload-section">
-            <label>對照資料狀態：</label>
-            <div id="json-status" style="font-size: 12px; color: #007aff; font-weight: normal; margin-top: 4px;">⏳ 正在讀取本地 login.json...</div>
-        </div>
         <ul id="floor-list"></ul>
     </div>
 
@@ -104,142 +70,53 @@
     </div>
 
     <script>
+        // 新的寫法（自動適應本地端與 Render 雲端環境）：
         const BASE_API = window.location.origin + '/api';
         let currentLoadingId = null;
+        
+        // 暫存當前關卡的雙語 HTML
         let currentStories = { zh: '', en: '' }; 
 
-        // 暫存 API 取得的所有 floorId 陣列
-        let rawFloorsFromApi = [];
-
-        // 動態維護的對照表
-        let knownFloors = {};
-        let floorNames = {};
-
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. 先嘗試自動讀取本地的 login.json
-            // 2. 完成後再讀取後端的章節列表
-            loadLocalLoginJson().then(() => {
-                loadFloorList();
-            });
+            loadFloorList();
             
+            // 監聽語系切換事件
             document.getElementById('lang-selector').addEventListener('change', (e) => {
                 renderCurrentStory(e.target.value);
             });
         });
 
-        // 自動讀取本地 login.json 的函數
-        async function loadLocalLoginJson() {
-            const jsonStatus = document.getElementById('json-status');
-            try {
-                const response = await fetch('login.json');
-                
-                if (!response.ok) {
-                    throw new Error(`找不到檔案或伺服器錯誤 (狀態碼: ${response.status})`);
-                }
-                
-                const jsonData = await response.json();
-                console.log("📄 成功自動讀取本地 login.json:", jsonData);
-
-                parseCustomJson(jsonData); 
-                
-                if (jsonStatus) {
-                    jsonStatus.innerText = "✅ login.json 載入成功";
-                    jsonStatus.style.color = "#388e3c";
-                }
-            } catch (err) {
-                console.error("❌ 讀取 login.json 失敗:", err);
-                if (jsonStatus) {
-                    jsonStatus.innerText = "❌ 無法讀取 login.json";
-                    jsonStatus.style.color = "#d32f2f";
-                }
-            }
-        }
-
-        // 解析 JSON 資料的邏輯
-        function parseCustomJson(data) {
-            // 情況 1: 含有 stageList 陣列 (例如神魔關卡 JSON)
-            if (data.stageList && Array.isArray(data.stageList)) {
-                data.stageList.forEach(stage => {
-                    const id = String(stage.id || stage.floorId);
-                    const name = stage.name || stage.stageName;
-                    if (id && name) {
-                        floorNames[id] = name;
-                        knownFloors[id] = true;
-                    }
-                });
-            }
-            // 情況 2: 含有 subNames 或直接是 key-value 對照表 (例如 {"2": "通靈者的認可"})
-            else if (typeof data === 'object') {
-                Object.keys(data).forEach(id => {
-                    floorNames[id] = data[id];
-                    knownFloors[id] = true;
-                });
-            }
-            console.log("更新後的 floorNames 對照表:", floorNames);
-        }
-
         async function loadFloorList() {
             const statusDiv = document.getElementById('status');
+            const floorList = document.getElementById('floor-list');
             try {
                 const response = await fetch(`${BASE_API}/floors`);
                 const result = await response.json();
-
                 if (result.success) {
                     statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。`;
-                    
-                    rawFloorsFromApi = result.floors;
-                    renderFloorList(); // 呼叫繪製列表功能
-                } else { 
-                    throw new Error(result.error || "後端回應失敗"); 
-                }
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。可點選下方並隨時切換語系。`;
+                    result.floors.forEach((floorId, index) => {
+                        const li = document.createElement('li');
+                        li.innerText = floorId;
+                        li.addEventListener('click', () => {
+                            document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
+                            li.classList.add('active');
+                            loadStoryFromServer(floorId);
+                        });
+                        floorList.appendChild(li);
+                        if(index === 0) li.click();
+                    });
+                } else { throw new Error(result.error); }
             } catch (error) {
-                console.error("❌ loadFloorList 發生錯誤:", error);
                 statusDiv.className = 'error';
                 statusDiv.innerText = `初始化失敗：${error.message}`;
             }
         }
 
-        // 根據 rawFloorsFromApi 與當前的 floorNames 渲染 UI
-        function renderFloorList() {
-            const floorList = document.getElementById('floor-list');
-            floorList.innerHTML = ''; 
-
-            rawFloorsFromApi.forEach((floorId, index) => {
-                const strId = String(floorId).trim();
-                
-                // 比對是否有記錄在 knownFloors 內
-                const isNew = !knownFloors.hasOwnProperty(strId);
-                
-                // 是否找得到名稱，找不到就顯示 "關卡 ID"
-                const name = floorNames[strId] || `關卡 ${strId}`;
-
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div class="floor-info">
-                        <span class="floor-name">${name}</span>
-                        <span class="floor-id">ID: ${strId}</span>
-                    </div>
-                    ${isNew ? '<span class="badge-new">NEW</span>' : ''}
-                `;
-
-                li.addEventListener('click', () => {
-                    document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
-                    li.classList.add('active');
-                    loadStoryFromServer(strId);
-                });
-                
-                floorList.appendChild(li);
-                if (index === 0 && !document.querySelector('#floor-list li.active')) {
-                    li.click();
-                }
-            });
-        }
-
         async function loadStoryFromServer(floorId) {
             const viewer = document.getElementById('story-viewer');
             currentLoadingId = floorId;
-            viewer.innerHTML = `<div class="no-story">⏳ 正在載入關卡 [ ${floorId} ] 的劇本...</div>`;
+            viewer.innerHTML = `<div class="no-story">⏳ 正在從官方即時下載關卡 [ ${floorId} ] 的中英文劇本...</div>`;
             
             try {
                 const response = await fetch(`${BASE_API}/story/${floorId}`);
@@ -251,6 +128,7 @@
                     currentStories.zh = result.zh;
                     currentStories.en = result.en;
                     
+                    // 根據當前下拉選單選擇的語系進行渲染
                     const currentLang = document.getElementById('lang-selector').value;
                     renderCurrentStory(currentLang);
                 } else { throw new Error(result.error); }
