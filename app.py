@@ -119,53 +119,68 @@ def build_html_from_fields(container, fields_config, lang="zh"):
 def home():
     return render_template('index.html')
 
-@app.route('/floorList.json')
-def serve_stagelist():
-    """提供靜態 JSON 檔案讀取"""
+# 讓前端也可以存取 static/json 資源（如果需要）
+@app.route('/floorlist.json')
+def serve_floorlist():
     templates_dir = os.path.join(app.root_path, 'templates')
-    filename = 'floorList.json' if os.path.exists(os.path.join(templates_dir, 'floorList.json')) else 'floorList.json'
-    return send_from_directory(templates_dir, filename)
+    return send_from_directory(templates_dir, 'floorlist.json')
 
 @app.route('/api/floors', methods=['GET'])
 def get_floors():
     try:
         init_index_data()
-        floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
+        current_floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
         
-        stage_names = {}
         base_dir = os.path.dirname(os.path.abspath(__file__))
+        templates_dir = os.path.join(base_dir, 'templates')
         
-        # 尋找所有可能放置 floorList.json 的地方
-        possible_paths = [
-            os.path.join(base_dir, 'templates', 'floorList.json'),
-            os.path.join(base_dir, 'templates', 'floorList.json'),
-            os.path.join(base_dir, 'floorList.json'),
-            os.path.join(base_dir, 'floorList.json')
-        ]
-        
-        target_file = None
-        for path in possible_paths:
-            if os.path.exists(path):
-                target_file = path
-                break
-        
-        if target_file:
+        # 1. 讀取關卡名稱檔 (floorlist.json)
+        floor_names = {}
+        floorlist_path = os.path.join(templates_dir, 'floorlist.json')
+        if os.path.exists(floorlist_path):
             try:
-                with open(target_file, 'r', encoding='utf-8') as f:
+                with open(floorlist_path, 'r', encoding='utf-8') as f:
                     stage_data = json.load(f)
                     for item in stage_data:
                         fid = str(item.get("floorid", "")).strip()
                         name = str(item.get("名稱", "")).strip()
-                        if fid:
-                            stage_names[fid] = name
+                        if fid: floor_names[fid] = name
             except Exception as e:
-                print(f"讀取 JSON 發生錯誤: {e}")
+                print(f"讀取 floorlist.json 錯誤: {e}")
+
+        # 2. 處理已知/新關卡紀錄 (known_floors.json)
+        known_path = os.path.join(templates_dir, 'known_floors.json')
+        known_floors = set()
+        
+        if os.path.exists(known_path):
+            try:
+                with open(known_path, 'r', encoding='utf-8') as f:
+                    known_floors = set(json.load(f))
+            except Exception as e:
+                print(f"讀取 known_floors.json 錯誤: {e}")
+
+        # 檢查是否有新關卡
+        new_floors = []
+        for fid in current_floor_ids:
+            if fid not in known_floors:
+                new_floors.append(fid)
+                known_floors.add(fid)
+
+        # 如果發現新關卡，自動回寫更新 known_floors.json
+        if new_floors:
+            try:
+                os.makedirs(templates_dir, exist_ok=True)
+                with open(known_path, 'w', encoding='utf-8') as f:
+                    json.dump(list(known_floors), f, ensure_ascii=False, indent=2)
+                print(f"發現並紀錄了 {len(new_floors)} 個新關卡！")
+            except Exception as e:
+                print(f"寫入 known_floors.json 失敗: {e}")
 
         return jsonify({
             "success": True, 
-            "floors": floor_ids,
-            "names": stage_names,
-            "loaded_count": len(stage_names)
+            "floors": current_floor_ids,
+            "names": floor_names,
+            "new_floors": new_floors  # 將這批是 NEW 的 floorId 清單傳給前端
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500

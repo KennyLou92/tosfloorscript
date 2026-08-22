@@ -11,14 +11,35 @@
             display: flex; height: 100vh; background-color: #f5f5f7; color: #2c3e50;
         }
         #sidebar {
-            width: 300px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
+            width: 320px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
         }
         #sidebar h2 { padding: 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
         #floor-list { list-style: none; overflow-y: auto; flex: 1; }
-        #floor-list li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+        #floor-list li { 
+            padding: 15px 20px; 
+            cursor: pointer; 
+            border-bottom: 1px solid #f0f0f0; 
+            transition: background 0.2s; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
         #floor-list li:hover { background-color: #f0f4f8; }
         #floor-list li.active { background-color: #007aff; color: white; font-weight: bold; }
         
+        /* NEW 標籤樣式 */
+        .badge-new {
+            background-color: #ff3b30;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            display: inline-block;
+            box-shadow: 0 1px 3px rgba(255, 59, 48, 0.4);
+        }
+
         #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
         
         #toolbar {
@@ -83,46 +104,40 @@
             const floorList = document.getElementById('floor-list');
             
             try {
-                // 1. 先讀取我們剛才開放的 /floorList.json
-                let stageMapping = {};
-                try {
-                    const stageRes = await fetch('/floorList.json');
-                    if (stageRes.ok) {
-                        const stageData = await stageRes.json();
-                        stageData.forEach(item => {
-                            const fid = String(item.floorid || '').trim();
-                            const name = String(item.名稱 || '').trim();
-                            if (fid) stageMapping[fid] = name;
-                        });
-                        console.log("成功解析 floorList.json：", stageMapping);
-                    } else {
-                        console.warn("無法取得 floorList.json，狀態碼：", stageRes.status);
-                    }
-                } catch (e) {
-                    console.warn("讀取 floorList.json 失敗：", e);
-                }
-
-                // 2. 載入後端 API 的 floors 列表
                 const response = await fetch(`${BASE_API}/floors`);
                 const result = await response.json();
                 
                 if (result.success) {
-                    const loadedCount = Object.keys(stageMapping).length;
+                    const newCount = result.new_floors ? result.new_floors.length : 0;
                     statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章 (對照名稱: ${loadedCount} 筆)。`;
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章` + (newCount > 0 ? ` (發現 ${newCount} 個新關卡！)` : '');
                     
+                    const names = result.names || {};
+                    const newFloorSet = new Set(result.new_floors || []);
+                    
+                    floorList.innerHTML = ''; // 清空列表
                     result.floors.forEach((floorId, index) => {
                         const li = document.createElement('li');
                         
-                        // 比對映射表
-                        const stageName = stageMapping[String(floorId).trim()];
-                        li.innerText = stageName ? `${floorId} - ${stageName}` : floorId;
+                        const name = names[floorId];
+                        const textSpan = document.createElement('span');
+                        textSpan.innerText = name ? `${floorId} - ${name}` : floorId;
+                        li.appendChild(textSpan);
+
+                        // 如果是新發現的關卡，加入紅色 NEW 標籤
+                        if (newFloorSet.has(floorId)) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge-new';
+                            badge.innerText = 'NEW';
+                            li.appendChild(badge);
+                        }
 
                         li.addEventListener('click', () => {
                             document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
                             li.classList.add('active');
                             loadStoryFromServer(floorId);
                         });
+                        
                         floorList.appendChild(li);
                         if(index === 0) li.click();
                     });
