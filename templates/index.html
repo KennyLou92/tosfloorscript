@@ -99,6 +99,17 @@
             });
         });
 
+        // 取得本地瀏覽器紀錄的已讀/已知 Floors
+        function getKnownFloors() {
+            const saved = localStorage.getItem('known_floors');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        // 儲存新的 Floor 到本地紀錄
+        function saveKnownFloors(floorsArray) {
+            localStorage.setItem('known_floors', JSON.stringify(floorsArray));
+        }
+
         async function loadFloorList() {
             const statusDiv = document.getElementById('status');
             const floorList = document.getElementById('floor-list');
@@ -108,15 +119,26 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    const newCount = result.new_floors ? result.new_floors.length : 0;
-                    statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章` + (newCount > 0 ? ` (發現 ${newCount} 個新關卡！)` : '');
-                    
                     const names = result.names || {};
-                    const newFloorSet = new Set(result.new_floors || []);
+                    const currentFloors = result.floors || [];
                     
-                    floorList.innerHTML = ''; // 清空列表
-                    result.floors.forEach((floorId, index) => {
+                    // 抓出瀏覽器紀錄
+                    let knownFloors = getKnownFloors();
+                    const knownSet = new Set(knownFloors);
+                    
+                    // 找出哪些是未曾見過的 NEW 關卡
+                    const newFloors = currentFloors.filter(fid => !knownSet.has(fid));
+                    
+                    // 如果是第一次使用（紀錄是空的），把當前所有關卡存入紀錄
+                    if (knownFloors.length === 0) {
+                        saveKnownFloors(currentFloors);
+                    }
+
+                    statusDiv.className = 'success';
+                    statusDiv.innerText = `選單成功！共 ${currentFloors.length} 章` + (newFloors.length > 0 ? ` (發現 ${newFloors.length} 個新關卡！)` : '');
+                    
+                    floorList.innerHTML = ''; 
+                    currentFloors.forEach((floorId, index) => {
                         const li = document.createElement('li');
                         
                         const name = names[floorId];
@@ -124,17 +146,22 @@
                         textSpan.innerText = name ? `${floorId} - ${name}` : floorId;
                         li.appendChild(textSpan);
 
-                        // 如果是新發現的關卡，加入紅色 NEW 標籤
-                        if (newFloorSet.has(floorId)) {
+                        // 如果不在已知紀錄中，標示 NEW
+                        if (!knownSet.has(floorId) && knownFloors.length > 0) {
                             const badge = document.createElement('span');
                             badge.className = 'badge-new';
                             badge.innerText = 'NEW';
+                            badge.id = `badge-${floorId}`;
                             li.appendChild(badge);
                         }
 
                         li.addEventListener('click', () => {
                             document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
                             li.classList.add('active');
+                            
+                            // 點擊關卡後，標記為已讀並移除 NEW 標籤
+                            markFloorAsKnown(floorId);
+                            
                             loadStoryFromServer(floorId);
                         });
                         
@@ -145,6 +172,19 @@
             } catch (error) {
                 statusDiv.className = 'error';
                 statusDiv.innerText = `初始化失敗：${error.message}`;
+            }
+        }
+
+        // 將特定 Floor 標記為已知並消除 NEW 徽章
+        function markFloorAsKnown(floorId) {
+            let knownFloors = getKnownFloors();
+            if (!knownFloors.includes(floorId)) {
+                knownFloors.push(floorId);
+                saveKnownFloors(knownFloors);
+                
+                // 動態移除 UI 上的 NEW 標籤
+                const badge = document.getElementById(`badge-${floorId}`);
+                if (badge) badge.remove();
             }
         }
 

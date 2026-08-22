@@ -134,7 +134,7 @@ def get_floors():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(base_dir, 'templates')
         
-        # 1. 讀取關卡名稱檔 (floorList.json)
+        # 讀取關卡名稱檔 (floorList.json)
         floor_names = {}
         floorlist_path = os.path.join(templates_dir, 'floorList.json')
         if os.path.exists(floorlist_path):
@@ -148,27 +148,10 @@ def get_floors():
             except Exception as e:
                 print(f"讀取 floorList.json 錯誤: {e}")
 
-        # 2. 讀取已知關卡紀錄 (known_floors.json)
-        known_path = os.path.join(templates_dir, 'known_floors.json')
-        known_floors = set()
-        
-        if os.path.exists(known_path):
-            try:
-                with open(known_path, 'r', encoding='utf-8') as f:
-                    known_floors = set(str(x).strip() for x in json.load(f))
-            except Exception as e:
-                print(f"讀取 known_floors.json 錯誤: {e}")
-
-        # 找出不在 known_floors 裡面的新關卡
-        new_floors = [fid for fid in current_floor_ids if fid not in known_floors]
-
-        print(f"--- [除錯] 當前關卡數: {len(current_floor_ids)}, 已知關卡數: {len(known_floors)}, 新關卡數: {len(new_floors)} ---")
-
         return jsonify({
             "success": True, 
             "floors": current_floor_ids,
-            "names": floor_names,
-            "new_floors": new_floors
+            "names": floor_names
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
