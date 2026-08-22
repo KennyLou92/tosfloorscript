@@ -86,7 +86,7 @@
             try {
                 // 1. 嘗試讀取本地 stageList.json
                 try {
-                    const response = await fetch('stageList.json');
+                    const response = await fetch('stagelist.json');
                     const data = await response.json();
                     // 將陣列轉為映射表 { "floorid": "名稱" }
                     data.forEach(item => {
