@@ -13,7 +13,20 @@
         #sidebar {
             width: 320px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
         }
-        #sidebar h2 { padding: 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
+        #sidebar h2 { padding: 15px 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
+        
+        /* 上傳 JSON 區塊樣式 */
+        .upload-section {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .upload-section label { font-size: 12px; font-weight: bold; color: #666; }
+        .upload-section input[type="file"] { font-size: 12px; }
+
         #floor-list { list-style: none; overflow-y: auto; flex: 1; }
         #floor-list li { 
             padding: 12px 15px; 
@@ -49,34 +62,22 @@
         }
         
         #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
-        
-        /* 工具列：包含狀態與語系切換 */
-        #toolbar {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px;
-        }
+        #toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; }
         #status { padding: 10px 15px; border-radius: 5px; font-weight: bold; flex: 1; text-align: left; }
         .loading { background-color: #e1f5fe; color: #0288d1; }
         .success { background-color: #e8f5e9; color: #388e3c; }
         .error { background-color: #ffebee; color: #d32f2f; }
         
-        /* 語系切換下拉選單 */
         #lang-selector {
             padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 5px;
             border: 1px solid #007aff; color: #007aff; background-color: white; cursor: pointer; outline: none;
         }
         #lang-selector:hover { background-color: #f0f4f8; }
 
-        /* 故事內文 */
         #story-viewer {
             flex: 1; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px;
             overflow-y: auto; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .story-section { margin-bottom: 35px; border-left: 4px solid #007aff; padding-left: 15px; }
-        .section-title { font-size: 15px; color: #007aff; margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
-        .dialog-row { margin-bottom: 16px; line-height: 1.8; }
-        .dialog-row-plain { margin-bottom: 16px; line-height: 1.8; color: #555; font-style: italic; background: #fafafa; padding: 6px 12px; border-radius: 4px; }
-        .speaker { font-weight: bold; color: #e67e22; margin-right: 8px; display: inline-block; }
-        .words { color: #2c3e50; }
         .no-story { color: #95a5a6; text-align: center; margin-top: 50px; font-style: italic; }
     </style>
 </head>
@@ -84,6 +85,11 @@
 
     <div id="sidebar">
         <h2>章節列表 (FloorId)</h2>
+        <!-- 新增 JSON 上傳按鈕區塊 -->
+        <div class="upload-section">
+            <label for="json-uploader">載入對照 JSON 檔 (例如 login.json):</label>
+            <input type="file" id="json-uploader" accept=".json">
+        </div>
         <ul id="floor-list"></ul>
     </div>
 
@@ -99,114 +105,91 @@
     </div>
 
     <script>
-        // 1. JSON 記錄庫：既有的 Floor 紀錄 (用於比對是否為 NEW)
-        const knownFloors = {
-            "2": true, "3": true, "4": true, "5": true, "6": true, "7": true, "8": true, "9": true, "10": true,
-            "11": true, "12": true, "13": true, "14": true, "15": true, "16": true, "17": true, "18": true, "19": true, "20": true,
-            "21": true, "22": true, "23": true, "24": true, "25": true, "26": true, "27": true, "28": true, "29": true, "30": true,
-            "31": true, "32": true, "38": true, "39": true, "87": true, "88": true, "89": true, "90": true, "91": true, "92": true,
-            "102": true, "103": true, "104": true, "105": true, "106": true, "107": true, "108": true, "109": true, "110": true, "111": true, "112": true, "113": true,
-            "132": true, "157": true, "158": true, "159": true, "160": true, "161": true, "162": true, "178": true, "191": true, "192": true, "193": true, "195": true,
-            "203": true, "204": true, "205": true, "206": true, "207": true, "208": true, "209": true, "210": true, "211": true, "212": true,
-            "213": true, "214": true, "215": true, "216": true, "217": true, "218": true, "219": true, "220": true, "221": true, "222": true,
-            "223": true, "224": true, "225": true, "226": true, "227": true, "230": true, "244": true, "245": true,
-            "249": true, "250": true, "251": true, "252": true, "253": true, "254": true, "255": true, "256": true
-        };
-
-        // 2. Floor ID 與名稱對照表
-        const floorNames = {
-            "2": "通靈者的認可", "3": "冰之亡靈塔", "4": "火之亡靈塔", "5": "地之亡靈塔", "6": "光之亡靈塔", "7": "暗之亡靈塔",
-            "8": "第一階段封印", "9": "深海的龍殿", "10": "炎族的宴會", "11": "果園的稀客", "12": "高雅的皇宮", "13": "幽谷的盛宴",
-            "14": "第二階段封印", "15": "冰川上飄溜的精靈", "16": "火焰上烈舞的精靈", "17": "深山中高歌的精靈", "18": "暮光下閃耀的精靈",
-            "19": "暗夜裡狩獵的精靈", "20": "第三階段封印", "21": "水下的伏兵", "22": "燃燒的赤鐵", "23": "荒野的巨岩",
-            "24": "聖光的指引", "25": "夢魘的險惡", "26": "第四階段封印", "27": "極度深淵", "28": "血焰峰頂", "29": "鏖戰巨崗",
-            "30": "聖神降瑞", "31": "魔魂印記", "32": "第五階段封印", "38": "貪婪之日", "39": "黃金之日", "87": "褻瀆的寶船",
-            "88": "永無寧靜之地", "89": "永恆英靈殿", "90": "轟雷荒土", "91": "監禁的惡神", "92": "塔的彼端",
-            "102": "赤之白羊宮", "103": "炎之金牛宮", "104": "闇之雙子宮", "105": "幽之巨蟹宮", "106": "光之獅子宮",
-            "107": "耀之處女宮", "108": "義之天秤宮", "109": "毒之天蠍宮", "110": "森之人馬宮", "111": "翠之山羊宮",
-            "112": "清之水瓶宮", "113": "海之雙魚宮", "132": "塵封之祕", "157": "沛雨神殿", "158": "戰火神殿",
-            "159": "颶風神殿", "160": "鷹揚神殿", "161": "冥界神殿", "162": "天界的門廊", "178": "黃昏的歌劇",
-            "191": "狹縫之門 ‧ 靈魂石", "192": "狹縫之門 ‧ 魔獸", "193": "狹縫之門 ‧ 元素", "195": "謁見眾神之人",
-            "203": "涓流的追憶", "204": "復燃的龍焰", "205": "大地的子民", "206": "耀目的帥印", "207": "祭師的禱詞",
-            "208": "命運女神 ‧ 記錄", "209": "命運女神 ‧ 所印證", "210": "命運女神 ‧ 書寫", "211": "神木種下的永生", "212": "屠夫栽培的女神",
-            "223": "清源二郎庭", "224": "天尊太師座", "225": "神臺太公廟", "226": "雷罡仙道觀", "227": "錠光圓覺寺",
-            "230": "五方帝登位", "244": "狹縫之門 ‧ 幻獸", "245": "奧秘之門", "254": "深潛之護", "255": "焰芒之爪", "256": "飢風狂嘯"
-        };
-
         const BASE_API = window.location.origin + '/api';
         let currentLoadingId = null;
-        
         let currentStories = { zh: '', en: '' }; 
 
+        // 暫存 API 取得的所有 floorId 陣列
+        let rawFloorsFromApi = [];
+
+        // 動態維護的對照表
+        let knownFloors = {};
+        let floorNames = {};
+
         window.addEventListener('DOMContentLoaded', () => {
-            console.log("🚀 頁面初始化完成，準備呼叫 API 載入 Floor 列表...");
             loadFloorList();
             
             document.getElementById('lang-selector').addEventListener('change', (e) => {
                 renderCurrentStory(e.target.value);
             });
+
+            // 監聽 JSON 上傳事件
+            document.getElementById('json-uploader').addEventListener('change', handleJsonUpload);
         });
+
+        // 讀取並解析使用者上傳的 JSON 檔案
+        function handleJsonUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    console.log("📄 成功讀取上傳的 JSON 檔:", jsonData);
+
+                    // 解析 JSON 檔案中的 stageList / subNames 結構
+                    parseCustomJson(jsonData);
+
+                    // 重新渲染左側選單
+                    renderFloorList();
+                    
+                    alert("JSON 對照資料載入成功！已更新名稱與 NEW 標籤。");
+                } catch (err) {
+                    console.error("❌ 解析 JSON 檔失敗:", err);
+                    alert("JSON 解析失敗，請確認檔案格式是否正確。");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // 解析 JSON 資料的邏輯
+        function parseCustomJson(data) {
+            // 情況 1: 含有 stageList 陣列 (例如神魔關卡 JSON)
+            if (data.stageList && Array.isArray(data.stageList)) {
+                data.stageList.forEach(stage => {
+                    const id = String(stage.id || stage.floorId);
+                    const name = stage.name || stage.stageName;
+                    if (id && name) {
+                        floorNames[id] = name;
+                        knownFloors[id] = true;
+                    }
+                });
+            }
+            // 情況 2: 含有 subNames 或直接是 key-value 對照表 (例如 {"2": "通靈者的認可"})
+            else if (typeof data === 'object') {
+                Object.keys(data).forEach(id => {
+                    floorNames[id] = data[id];
+                    knownFloors[id] = true;
+                });
+            }
+            console.log("更新後的 floorNames 對照表:", floorNames);
+        }
 
         async function loadFloorList() {
             const statusDiv = document.getElementById('status');
-            const floorList = document.getElementById('floor-list');
             try {
-                console.log(`📡 發送 API 請求至: ${BASE_API}/floors`);
                 const response = await fetch(`${BASE_API}/floors`);
                 const result = await response.json();
-                
-                // 🔍 LOG 1: 印出後端回應的原始 Response
-                console.log("📥 後端回應內容 (result):", result);
 
                 if (result.success) {
                     statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。可點選下方並隨時切換語系。`;
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。`;
                     
-                    floorList.innerHTML = ''; 
-                    
-                    // 🔍 LOG 2: 印出傳回來的 Floors 陣列
-                    console.log("📋 收到 Floor ID 列表:", result.floors);
-
-                    result.floors.forEach((floorId, index) => {
-                        const strId = String(floorId).trim(); // 確保轉為字串並移除兩端空格
-                        
-                        // 判斷是否為已知 Floor
-                        const isNew = !knownFloors.hasOwnProperty(strId);
-                        
-                        // 嘗試尋找名稱
-                        const hasNameInMap = floorNames.hasOwnProperty(strId);
-                        const name = hasNameInMap ? floorNames[strId] : `關卡 ${strId} (未知名稱)`;
-
-                        // 🔍 LOG 3: 針對找不到名稱的 Floor 輸出警告警示
-                        if (!hasNameInMap) {
-                            console.warn(`⚠️ [未配對告警] 後端傳回的 Floor ID "${strId}" (型態: ${typeof floorId}) 不存在於 floorNames 對照表中！`);
-                        } else {
-                            console.log(`✅ [配對成功] ID: ${strId} -> 名稱: ${name} | NEW: ${isNew}`);
-                        }
-
-                        const li = document.createElement('li');
-                        
-                        // 組裝 HTML
-                        li.innerHTML = `
-                            <div class="floor-info">
-                                <span class="floor-name">${name}</span>
-                                <span class="floor-id">ID: ${strId}</span>
-                            </div>
-                            ${isNew ? '<span class="badge-new">NEW</span>' : ''}
-                        `;
-
-                        li.addEventListener('click', () => {
-                            console.log(`👆 使用者點擊了關卡 ID: ${strId}`);
-                            document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
-                            li.classList.add('active');
-                            loadStoryFromServer(strId);
-                        });
-                        
-                        floorList.appendChild(li);
-                        if(index === 0) li.click();
-                    });
+                    rawFloorsFromApi = result.floors;
+                    renderFloorList(); // 呼叫繪製列表功能
                 } else { 
-                    throw new Error(result.error || "後端返回 success: false"); 
+                    throw new Error(result.error || "後端回應失敗"); 
                 }
             } catch (error) {
                 console.error("❌ loadFloorList 發生錯誤:", error);
@@ -215,22 +198,52 @@
             }
         }
 
+        // 根據 rawFloorsFromApi 與當前的 floorNames 渲染 UI
+        function renderFloorList() {
+            const floorList = document.getElementById('floor-list');
+            floorList.innerHTML = ''; 
+
+            rawFloorsFromApi.forEach((floorId, index) => {
+                const strId = String(floorId).trim();
+                
+                // 比對是否有記錄在 knownFloors 內
+                const isNew = !knownFloors.hasOwnProperty(strId);
+                
+                // 是否找得到名稱，找不到就顯示 "關卡 ID"
+                const name = floorNames[strId] || `關卡 ${strId}`;
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="floor-info">
+                        <span class="floor-name">${name}</span>
+                        <span class="floor-id">ID: ${strId}</span>
+                    </div>
+                    ${isNew ? '<span class="badge-new">NEW</span>' : ''}
+                `;
+
+                li.addEventListener('click', () => {
+                    document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
+                    li.classList.add('active');
+                    loadStoryFromServer(strId);
+                });
+                
+                floorList.appendChild(li);
+                if (index === 0 && !document.querySelector('#floor-list li.active')) {
+                    li.click();
+                }
+            });
+        }
+
         async function loadStoryFromServer(floorId) {
             const viewer = document.getElementById('story-viewer');
             currentLoadingId = floorId;
-            viewer.innerHTML = `<div class="no-story">⏳ 正在從官方即時下載關卡 [ ${floorId} ] 的中英文劇本...</div>`;
+            viewer.innerHTML = `<div class="no-story">⏳ 正在載入關卡 [ ${floorId} ] 的劇本...</div>`;
             
-            console.log(`📡 開始載入關卡 [${floorId}] 的劇本內文...`);
             try {
                 const response = await fetch(`${BASE_API}/story/${floorId}`);
                 const result = await response.json();
                 
-                console.log(`📥 關卡 [${floorId}] 回應內文結果:`, result);
-
-                if (currentLoadingId !== floorId) {
-                    console.log(`ℹ️ 使用者已切換到其他關卡 (現為: ${currentLoadingId})，捨棄 [${floorId}] 的載入結果。`);
-                    return;
-                }
+                if (currentLoadingId !== floorId) return;
 
                 if (result.success) {
                     currentStories.zh = result.zh;
@@ -241,14 +254,12 @@
                 } else { throw new Error(result.error); }
             } catch (error) {
                 if (currentLoadingId !== floorId) return;
-                console.error(`❌ 下載關卡 [${floorId}] 劇本失敗:`, error);
                 viewer.innerHTML = `<div class="no-story" style="color:#d32f2f;">❌【讀取失敗】<br><br>${error.message}</div>`;
             }
         }
 
         function renderCurrentStory(lang) {
             const viewer = document.getElementById('story-viewer');
-            console.log(`🎨 渲染當前劇本，語系: ${lang}`);
             if (currentStories[lang]) {
                 viewer.innerHTML = currentStories[lang];
                 viewer.scrollTop = 0;
