@@ -134,9 +134,9 @@ def get_floors():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(base_dir, 'templates')
         
-        # 1. 讀取關卡名稱檔 (floorlist.json)
+        # 1. 讀取關卡名稱檔 (floorList.json)
         floor_names = {}
-        floorlist_path = os.path.join(templates_dir, 'floorlist.json')
+        floorlist_path = os.path.join(templates_dir, 'floorList.json')
         if os.path.exists(floorlist_path):
             try:
                 with open(floorlist_path, 'r', encoding='utf-8') as f:
@@ -146,7 +146,7 @@ def get_floors():
                         name = str(item.get("名稱", "")).strip()
                         if fid: floor_names[fid] = name
             except Exception as e:
-                print(f"讀取 floorlist.json 錯誤: {e}")
+                print(f"讀取 floorList.json 錯誤: {e}")
 
         # 2. 讀取已知關卡紀錄 (known_floors.json)
         known_path = os.path.join(templates_dir, 'known_floors.json')
