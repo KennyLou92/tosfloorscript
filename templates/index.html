@@ -15,7 +15,7 @@
         }
         #sidebar h2 { padding: 15px 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
         
-        /* 上傳 JSON 區塊樣式 */
+        /* 狀態提示區塊樣式 */
         .upload-section {
             padding: 12px 20px;
             background-color: #f8f9fa;
@@ -25,8 +25,7 @@
             gap: 6px;
         }
         .upload-section label { font-size: 12px; font-weight: bold; color: #666; }
-        .upload-section input[type="file"] { font-size: 12px; }
-
+        
         #floor-list { list-style: none; overflow-y: auto; flex: 1; }
         #floor-list li { 
             padding: 12px 15px; 
@@ -85,10 +84,10 @@
 
     <div id="sidebar">
         <h2>章節列表 (FloorId)</h2>
-        <!-- 新增 JSON 上傳按鈕區塊 -->
+        <!-- 顯示 JSON 自動讀取狀態 -->
         <div class="upload-section">
-            <label for="json-uploader">載入對照 JSON 檔 (例如 login.json):</label>
-            <input type="file" id="json-uploader" accept=".json">
+            <label>對照資料狀態：</label>
+            <div id="json-status" style="font-size: 12px; color: #007aff; font-weight: normal; margin-top: 4px;">⏳ 正在讀取本地 login.json...</div>
         </div>
         <ul id="floor-list"></ul>
     </div>
@@ -117,40 +116,43 @@
         let floorNames = {};
 
         window.addEventListener('DOMContentLoaded', () => {
-            loadFloorList();
+            // 1. 先嘗試自動讀取本地的 login.json
+            // 2. 完成後再讀取後端的章節列表
+            loadLocalLoginJson().then(() => {
+                loadFloorList();
+            });
             
             document.getElementById('lang-selector').addEventListener('change', (e) => {
                 renderCurrentStory(e.target.value);
             });
-
-            // 監聽 JSON 上傳事件
-            document.getElementById('json-uploader').addEventListener('change', handleJsonUpload);
         });
 
-        // 讀取並解析使用者上傳的 JSON 檔案
-        function handleJsonUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const jsonData = JSON.parse(e.target.result);
-                    console.log("📄 成功讀取上傳的 JSON 檔:", jsonData);
-
-                    // 解析 JSON 檔案中的 stageList / subNames 結構
-                    parseCustomJson(jsonData);
-
-                    // 重新渲染左側選單
-                    renderFloorList();
-                    
-                    alert("JSON 對照資料載入成功！已更新名稱與 NEW 標籤。");
-                } catch (err) {
-                    console.error("❌ 解析 JSON 檔失敗:", err);
-                    alert("JSON 解析失敗，請確認檔案格式是否正確。");
+        // 自動讀取本地 login.json 的函數
+        async function loadLocalLoginJson() {
+            const jsonStatus = document.getElementById('json-status');
+            try {
+                const response = await fetch('login.json');
+                
+                if (!response.ok) {
+                    throw new Error(`找不到檔案或伺服器錯誤 (狀態碼: ${response.status})`);
                 }
-            };
-            reader.readAsText(file);
+                
+                const jsonData = await response.json();
+                console.log("📄 成功自動讀取本地 login.json:", jsonData);
+
+                parseCustomJson(jsonData); 
+                
+                if (jsonStatus) {
+                    jsonStatus.innerText = "✅ login.json 載入成功";
+                    jsonStatus.style.color = "#388e3c";
+                }
+            } catch (err) {
+                console.error("❌ 讀取 login.json 失敗:", err);
+                if (jsonStatus) {
+                    jsonStatus.innerText = "❌ 無法讀取 login.json";
+                    jsonStatus.style.color = "#d32f2f";
+                }
+            }
         }
 
         // 解析 JSON 資料的邏輯
