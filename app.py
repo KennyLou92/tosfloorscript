@@ -125,12 +125,28 @@ def get_floors():
         init_index_data()
         floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
         
-        # 讀取 stagelist.json 關卡名稱資訊
         stage_names = {}
-        json_path = 'stagelist.json' if os.path.exists('stagelist.json') else 'stagelist.json'
-        if os.path.exists(json_path):
+        
+        # 取得 app.py 所在的絕對目錄路徑
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # 設定包含 templates 資料夾在內的所有可能路徑與大小寫組合
+        possible_paths = [
+            os.path.join(base_dir, 'templates', 'stageList.json'),
+            os.path.join(base_dir, 'templates', 'stagelist.json'),
+            os.path.join(base_dir, 'stageList.json'),
+            os.path.join(base_dir, 'stagelist.json')
+        ]
+        
+        target_file = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                target_file = path
+                break
+        
+        if target_file:
             try:
-                with open(json_path, 'r', encoding='utf-8') as f:
+                with open(target_file, 'r', encoding='utf-8') as f:
                     stage_data = json.load(f)
                     for item in stage_data:
                         fid = str(item.get("floorid", "")).strip()
@@ -138,13 +154,13 @@ def get_floors():
                         if fid:
                             stage_names[fid] = name
             except Exception as e:
-                print(f"讀取 stagelist.json 失敗: {e}")
+                print(f"讀取 JSON 發生錯誤: {e}")
 
-        # floors 保持原本純 ID 的陣列格式，另外回傳 names 對照表
         return jsonify({
             "success": True, 
             "floors": floor_ids,
-            "names": stage_names
+            "names": stage_names,
+            "loaded_count": len(stage_names)
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
