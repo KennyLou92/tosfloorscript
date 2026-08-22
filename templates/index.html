@@ -57,7 +57,7 @@
 
     <div id="content-area">
         <div id="toolbar">
-            <div id="status" class="loading">正在初始化...</div>
+            <div id="status" class="loading">正在連線 Python 後端並載入選單...</div>
             <select id="lang-selector">
                 <option value="zh">繁體中文 (ZH)</option>
                 <option value="en">English (EN)</option>
@@ -70,7 +70,6 @@
         const BASE_API = window.location.origin + '/api';
         let currentLoadingId = null;
         let currentStories = { zh: '', en: '' }; 
-        let stageMapping = {}; // 用於存放 floorid 對應名稱
 
         window.addEventListener('DOMContentLoaded', () => {
             loadFloorList();
@@ -82,35 +81,21 @@
         async function loadFloorList() {
             const statusDiv = document.getElementById('status');
             const floorList = document.getElementById('floor-list');
-            
             try {
-                // 1. 嘗試讀取本地 stageList.json
-                try {
-                    const response = await fetch('stagelist.json');
-                    const data = await response.json();
-                    // 將陣列轉為映射表 { "floorid": "名稱" }
-                    data.forEach(item => {
-                        if (item.floorid) {
-                            stageMapping[item.floorid] = item.名稱 ? item.名稱.trim() : '';
-                        }
-                    });
-                } catch (e) {
-                    console.warn("未找到或無法讀取 stageList.json，將僅顯示 Floor ID");
-                }
-
-                // 2. 載入後端 API 列表
                 const response = await fetch(`${BASE_API}/floors`);
                 const result = await response.json();
-                
                 if (result.success) {
                     statusDiv.className = 'success';
-                    statusDiv.innerText = `載入成功！共 ${result.floors.length} 章。`;
+                    statusDiv.innerText = `選單成功！共 ${result.floors.length} 章。可點選下方並隨時切換語系。`;
                     
+                    const names = result.names || {};
                     result.floors.forEach((floorId, index) => {
                         const li = document.createElement('li');
-                        const displayName = stageMapping[floorId] ? `${floorId} - ${stageMapping[floorId]}` : floorId;
-                        li.innerText = displayName;
                         
+                        // 若 names 字典內有名稱則顯示 "ID - 名稱"，否則僅顯示 ID
+                        const name = names[floorId];
+                        li.innerText = name ? `${floorId} - ${name}` : floorId;
+
                         li.addEventListener('click', () => {
                             document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
                             li.classList.add('active');
@@ -129,7 +114,7 @@
         async function loadStoryFromServer(floorId) {
             const viewer = document.getElementById('story-viewer');
             currentLoadingId = floorId;
-            viewer.innerHTML = `<div class="no-story">⏳ 正在下載 [ ${floorId} ] 的劇本...</div>`;
+            viewer.innerHTML = `<div class="no-story">⏳ 正在從官方即時下載關卡 [ ${floorId} ] 的中英文劇本...</div>`;
             
             try {
                 const response = await fetch(`${BASE_API}/story/${floorId}`);
@@ -140,11 +125,12 @@
                 if (result.success) {
                     currentStories.zh = result.zh;
                     currentStories.en = result.en;
-                    renderCurrentStory(document.getElementById('lang-selector').value);
+                    const currentLang = document.getElementById('lang-selector').value;
+                    renderCurrentStory(currentLang);
                 } else { throw new Error(result.error); }
             } catch (error) {
                 if (currentLoadingId !== floorId) return;
-                viewer.innerHTML = `<div class="no-story" style="color:#d32f2f;">❌ 讀取失敗：<br>${error.message}</div>`;
+                viewer.innerHTML = `<div class="no-story" style="color:#d32f2f;">❌【讀取失敗】<br><br>${error.message}</div>`;
             }
         }
 
@@ -154,7 +140,7 @@
                 viewer.innerHTML = currentStories[lang];
                 viewer.scrollTop = 0;
             } else {
-                viewer.innerHTML = `<div class="no-story">(該章節無此語言劇本)</div>`;
+                viewer.innerHTML = `<div class="no-story">(該章節無此語言劇本內容)</div>`;
             }
         }
     </script>
