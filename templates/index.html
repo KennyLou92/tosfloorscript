@@ -83,10 +83,10 @@
             const floorList = document.getElementById('floor-list');
             
             try {
-                // 1. 先讀取我們剛才開放的 /stagelist.json
+                // 1. 先讀取我們剛才開放的 /floorList.json
                 let stageMapping = {};
                 try {
-                    const stageRes = await fetch('/stagelist.json');
+                    const stageRes = await fetch('/floorList.json');
                     if (stageRes.ok) {
                         const stageData = await stageRes.json();
                         stageData.forEach(item => {
@@ -94,12 +94,12 @@
                             const name = String(item.名稱 || '').trim();
                             if (fid) stageMapping[fid] = name;
                         });
-                        console.log("成功解析 stagelist.json：", stageMapping);
+                        console.log("成功解析 floorList.json：", stageMapping);
                     } else {
-                        console.warn("無法取得 stagelist.json，狀態碼：", stageRes.status);
+                        console.warn("無法取得 floorList.json，狀態碼：", stageRes.status);
                     }
                 } catch (e) {
-                    console.warn("讀取 stagelist.json 失敗：", e);
+                    console.warn("讀取 floorList.json 失敗：", e);
                 }
 
                 // 2. 載入後端 API 的 floors 列表

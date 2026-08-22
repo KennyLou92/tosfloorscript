@@ -119,11 +119,11 @@ def build_html_from_fields(container, fields_config, lang="zh"):
 def home():
     return render_template('index.html')
 
-@app.route('/stagelist.json')
+@app.route('/floorList.json')
 def serve_stagelist():
     """提供靜態 JSON 檔案讀取"""
     templates_dir = os.path.join(app.root_path, 'templates')
-    filename = 'stagelist.json' if os.path.exists(os.path.join(templates_dir, 'stagelist.json')) else 'stagelist.json'
+    filename = 'floorList.json' if os.path.exists(os.path.join(templates_dir, 'floorList.json')) else 'floorList.json'
     return send_from_directory(templates_dir, filename)
 
 @app.route('/api/floors', methods=['GET'])
@@ -135,12 +135,12 @@ def get_floors():
         stage_names = {}
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
-        # 尋找所有可能放置 stagelist.json 的地方
+        # 尋找所有可能放置 floorList.json 的地方
         possible_paths = [
-            os.path.join(base_dir, 'templates', 'stagelist.json'),
-            os.path.join(base_dir, 'templates', 'stagelist.json'),
-            os.path.join(base_dir, 'stagelist.json'),
-            os.path.join(base_dir, 'stagelist.json')
+            os.path.join(base_dir, 'templates', 'floorList.json'),
+            os.path.join(base_dir, 'templates', 'floorList.json'),
+            os.path.join(base_dir, 'floorList.json'),
+            os.path.join(base_dir, 'floorList.json')
         ]
         
         target_file = None
