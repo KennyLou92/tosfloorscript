@@ -2,7 +2,7 @@ import base64
 import json
 import os
 import requests
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from Crypto.Cipher import ChaCha20
 
@@ -119,6 +119,13 @@ def build_html_from_fields(container, fields_config, lang="zh"):
 def home():
     return render_template('index.html')
 
+@app.route('/stagelist.json')
+def serve_stagelist():
+    """提供靜態 JSON 檔案讀取"""
+    templates_dir = os.path.join(app.root_path, 'templates')
+    filename = 'stagelist.json' if os.path.exists(os.path.join(templates_dir, 'stagelist.json')) else 'stagelist.json'
+    return send_from_directory(templates_dir, filename)
+
 @app.route('/api/floors', methods=['GET'])
 def get_floors():
     try:
@@ -126,11 +133,9 @@ def get_floors():
         floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
         
         stage_names = {}
-        
-        # 取得 app.py 所在的絕對目錄路徑
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
-        # 設定包含 templates 資料夾在內的所有可能路徑與大小寫組合
+        # 尋找所有可能放置 stagelist.json 的地方
         possible_paths = [
             os.path.join(base_dir, 'templates', 'stagelist.json'),
             os.path.join(base_dir, 'templates', 'stagelist.json'),
@@ -165,48 +170,14 @@ def get_floors():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/floors', methods=['GET'])
-def get_floors():
+@app.route('/api/story/<floor_id>', methods=['GET'])
+def get_story(floor_id):
     try:
         init_index_data()
-        floor_ids = [str(item["floorId"]).strip() for item in cached_floor_scripts]
+        target_item = next((item for item in cached_floor_scripts if str(item["floorId"]).strip() == str(floor_id).strip()), None)
         
-        stage_names = {}
-        # 自動尋找 JSON 檔案
-        json_path = 'stagelist.json' if os.path.exists('stagelist.json') else 'stagelist.json'
-        
-        print(f"--- [除錯] 檢查 JSON 路徑: {json_path}, 是否存在: {os.path.exists(json_path)} ---")
-        
-        if os.path.exists(json_path):
-            try:
-                with open(json_path, 'r', encoding='utf-8') as f:
-                    stage_data = json.load(f)
-                    for item in stage_data:
-                        fid = str(item.get("floorid", "")).strip()
-                        name = str(item.get("名稱", "")).strip()
-                        if fid:
-                            stage_names[fid] = name
-                print(f"--- [除錯] 成功載入 stagelist.json，共有 {len(stage_names)} 筆名稱對照 ---")
-            except Exception as e:
-                print(f"--- [除錯] 讀取 stagelist.json 失敗: {e} ---")
-
-        return jsonify({
-            "success": True, 
-            "floors": floor_ids,
-            "names": stage_names,
-            "loaded_count": len(stage_names)  # 傳回讀取到的名稱數量
-        })
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-from flask import send_from_directory
-
-@app.route('/stagelist.json')
-def serve_stagelist():
-    # 強制指名到 templates 資料夾讀取 JSON 檔案傳給前端
-    templates_dir = os.path.join(app.root_path, 'templates')
-    filename = 'stagelist.json' if os.path.exists(os.path.join(templates_dir, 'stagelist.json')) else 'stagelist.json'
-    return send_from_directory(templates_dir, filename)
+        if not target_item:
+            return jsonify({"success": False, "error": "Floor ID not found"}), 404
             
         md5 = target_item["md5"]
         actual_id = target_item["floorId"]
