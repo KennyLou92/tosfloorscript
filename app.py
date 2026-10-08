@@ -9,7 +9,7 @@ from Crypto.Cipher import ChaCha20
 app = Flask(__name__)
 CORS(app)
 
-DEFAULT_URL = "https://cf.tosconfig.com/floorScripts/com.madhead.tos.zh/7bf6db0848fcb93c845d68a4d43ba79f-index.data"
+DEFAULT_URL = "https://cf.tosconfig.com/floorScripts/com.madhead.tos.zh/a2cb42550ff11cc8875ff2bebf7682c2-index.data"
 encoded_key = "Hw0QCtCMy2SQ91gDNh813jeKXSGfrRvzN1UOIPKIRKY="
 KEY = base64.b64decode(encoded_key)
 
@@ -115,6 +115,24 @@ def build_html_from_fields(container, fields_config, lang="zh"):
                 
     return "".join(html_blocks) if html_blocks else None
 
+def load_floor_names(templates_dir, filename):
+    """讀取關卡名稱檔，回傳 {floorid: 名稱}"""
+    names = {}
+    path = os.path.join(templates_dir, filename)
+    if not os.path.exists(path):
+        print(f"找不到 {filename}")
+        return names
+    try:
+        with open(path, 'r', encoding='utf-8-sig') as f:
+            for item in json.load(f):
+                fid = str(item.get("floorid", "")).strip()
+                name = str(item.get("名稱", "")).strip()
+                if fid:
+                    names[fid] = name
+    except Exception as e:
+        print(f"讀取 {filename} 錯誤: {e}")
+    return names
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -134,24 +152,15 @@ def get_floors():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(base_dir, 'templates')
         
-        # 讀取關卡名稱檔 (floorList.json)
-        floor_names = {}
-        floorlist_path = os.path.join(templates_dir, 'floorList.json')
-        if os.path.exists(floorlist_path):
-            try:
-                with open(floorlist_path, 'r', encoding='utf-8') as f:
-                    stage_data = json.load(f)
-                    for item in stage_data:
-                        fid = str(item.get("floorid", "")).strip()
-                        name = str(item.get("名稱", "")).strip()
-                        if fid: floor_names[fid] = name
-            except Exception as e:
-                print(f"讀取 floorList.json 錯誤: {e}")
+        # 讀取關卡名稱檔（中文 / 英文）
+        floor_names = load_floor_names(templates_dir, 'floorList.json')
+        floor_names_en = load_floor_names(templates_dir, 'floorlistEN.json')
 
         return jsonify({
             "success": True, 
             "floors": current_floor_ids,
-            "names": floor_names
+            "names": floor_names,
+            "names_en": floor_names_en
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -202,7 +211,7 @@ def get_story(floor_id):
         if not zh_html:
             zh_html = '<div class="no-story">(該章節無中文對話劇本內容)</div>'
         if not en_html:
-            en_html = '<div class="no-story">(該章節無英文對話劇本內容)</div>'
+            en_html = '<div class="no-story">(No English script available for this chapter)</div>'
         
         return jsonify({
             "success": True, 

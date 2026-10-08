@@ -5,219 +5,338 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>神魔故事</title>
     <style>
+        :root {
+            --bg: #f5f5f7; --panel: #ffffff; --panel-alt: #fafafa; --border: #e0e0e0; --border-soft: #f0f0f0;
+            --text: #2c3e50; --muted: #95a5a6; --accent: #007aff; --hover: #f0f4f8; --note: #555;
+            --speaker: #e67e22;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121214; --panel: #1c1c1f; --panel-alt: #232327; --border: #2e2e33; --border-soft: #28282c;
+                --text: #e6e8ea; --muted: #8b949e; --accent: #4da3ff; --hover: #26262b; --note: #b0b6bc;
+                --speaker: #f0a35e;
+            }
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
-            display: flex; height: 100vh; background-color: #f5f5f7; color: #2c3e50;
+            display: flex; height: 100vh; background-color: var(--bg); color: var(--text);
         }
         #sidebar {
-            width: 320px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column;
+            width: 320px; background-color: var(--panel); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; flex-shrink: 0;
         }
-        #sidebar h2 { padding: 20px; font-size: 18px; border-bottom: 1px solid #e0e0e0; background-color: #fafafa; }
+        #sidebar h2 { padding: 20px 20px 12px; font-size: 18px; background-color: var(--panel-alt); }
+        #search-wrap { padding: 0 20px 14px; background-color: var(--panel-alt); border-bottom: 1px solid var(--border); }
+        #search {
+            width: 100%; padding: 9px 12px; font-size: 14px; border-radius: 6px;
+            border: 1px solid var(--border); background: var(--panel); color: var(--text); outline: none;
+        }
+        #search:focus { border-color: var(--accent); }
         #floor-list { list-style: none; overflow-y: auto; flex: 1; }
-        #floor-list li { 
-            padding: 15px 20px; 
-            cursor: pointer; 
-            border-bottom: 1px solid #f0f0f0; 
-            transition: background 0.2s; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        #floor-list li {
+            padding: 15px 20px; cursor: pointer; border-bottom: 1px solid var(--border-soft);
+            transition: background 0.2s; display: flex; justify-content: space-between; align-items: center; gap: 8px;
         }
-        #floor-list li:hover { background-color: #f0f4f8; }
-        #floor-list li.active { background-color: #007aff; color: white; font-weight: bold; }
-        
-        /* NEW 標籤樣式 */
+        #floor-list li:hover { background-color: var(--hover); }
+        #floor-list li.active { background-color: var(--accent); color: white; font-weight: bold; }
+        #floor-list li.hidden { display: none; }
+        .empty-hint { padding: 30px 20px; text-align: center; color: var(--muted); font-style: italic; }
+
         .badge-new {
-            background-color: #ff3b30;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 8px;
-            display: inline-block;
+            background-color: #ff3b30; color: white; font-size: 10px; font-weight: bold;
+            padding: 2px 6px; border-radius: 10px; margin-left: 8px; display: inline-block; flex-shrink: 0;
             box-shadow: 0 1px 3px rgba(255, 59, 48, 0.4);
         }
 
-        #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
-        
-        #toolbar {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px;
-        }
+        #content-area { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; min-width: 0; }
+        #toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; }
         #status { padding: 10px 15px; border-radius: 5px; font-weight: bold; flex: 1; text-align: left; }
         .loading { background-color: #e1f5fe; color: #0288d1; }
         .success { background-color: #e8f5e9; color: #388e3c; }
         .error { background-color: #ffebee; color: #d32f2f; }
-        
+        @media (prefers-color-scheme: dark) {
+            .loading { background-color: #12303f; color: #6cc4f0; }
+            .success { background-color: #14301a; color: #6fcf80; }
+            .error { background-color: #3a1618; color: #ff8a8a; }
+        }
+
         #lang-selector {
             padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 5px;
-            border: 1px solid #007aff; color: #007aff; background-color: white; cursor: pointer; outline: none;
+            border: 1px solid var(--accent); color: var(--accent); background-color: var(--panel); cursor: pointer; outline: none;
         }
-        #lang-selector:hover { background-color: #f0f4f8; }
+        #lang-selector:hover { background-color: var(--hover); }
 
         #story-viewer {
-            flex: 1; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px;
+            flex: 1; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 30px;
             overflow-y: auto; font-size: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .story-section { margin-bottom: 35px; border-left: 4px solid #007aff; padding-left: 15px; }
-        .section-title { font-size: 15px; color: #007aff; margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
+        .story-section { margin-bottom: 35px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .section-title { font-size: 15px; color: var(--accent); margin-bottom: 15px; letter-spacing: 1px; font-weight: bold; }
         .dialog-row { margin-bottom: 16px; line-height: 1.8; }
-        .dialog-row-plain { margin-bottom: 16px; line-height: 1.8; color: #555; font-style: italic; background: #fafafa; padding: 6px 12px; border-radius: 4px; }
-        .speaker { font-weight: bold; color: #e67e22; margin-right: 8px; display: inline-block; }
-        .words { color: #2c3e50; }
-        .no-story { color: #95a5a6; text-align: center; margin-top: 50px; font-style: italic; }
+        .dialog-row-plain { margin-bottom: 16px; line-height: 1.8; color: var(--note); font-style: italic; background: var(--panel-alt); padding: 6px 12px; border-radius: 4px; }
+        .speaker { font-weight: bold; color: var(--speaker); margin-right: 8px; display: inline-block; }
+        .words { color: var(--text); }
+        .no-story { color: var(--muted); text-align: center; margin-top: 50px; font-style: italic; }
+        .no-story.err { color: #d32f2f; }
+
+        /* 手機版：側邊欄改到上方 */
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: 100dvh; }
+            #sidebar { width: 100%; height: 38%; border-right: none; border-bottom: 1px solid var(--border); }
+            #content-area { padding: 12px; }
+            #toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+            #story-viewer { padding: 18px; }
+        }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h2>章節列表</h2>
+        <h2 id="sidebar-title"></h2>
+        <div id="search-wrap"><input id="search" type="search" autocomplete="off"></div>
         <ul id="floor-list"></ul>
     </div>
 
     <div id="content-area">
         <div id="toolbar">
-            <div id="status" class="loading">正在連線 Python 後端並載入選單...</div>
+            <div id="status" class="loading"></div>
             <select id="lang-selector">
                 <option value="zh">繁體中文 (ZH)</option>
                 <option value="en">English (EN)</option>
             </select>
         </div>
-        <div id="story-viewer">請從左側選擇一個章節來閱讀故事劇本。</div>
+        <div id="story-viewer"></div>
     </div>
 
     <script>
         const BASE_API = window.location.origin + '/api';
+
+        // ===== 介面文字（多語言）=====
+        const I18N = {
+            zh: {
+                pageTitle: '神魔故事',
+                chapterList: '章節列表',
+                searchPlaceholder: '搜尋章節編號或名稱…',
+                connecting: '正在連線 Python 後端並載入選單...',
+                menuOk: n => `選單成功！共 ${n} 章`,
+                initFail: msg => `初始化失敗：${msg}`,
+                selectPrompt: '請從左側選擇一個章節來閱讀故事劇本。',
+                loadingStory: id => `⏳ 正在從官方即時下載關卡 [ ${id} ] 的中英文劇本...`,
+                loadFail: msg => `❌【讀取失敗】<br><br>${msg}`,
+                noLangStory: '(該章節無此語言劇本內容)',
+                noResults: '找不到符合的章節',
+                newBadge: 'NEW'
+            },
+            en: {
+                pageTitle: 'TOS Story',
+                chapterList: 'Chapters',
+                searchPlaceholder: 'Search chapter ID or name…',
+                connecting: 'Connecting to the Python backend and loading the list...',
+                menuOk: n => `Loaded successfully! ${n} chapters`,
+                initFail: msg => `Initialization failed: ${msg}`,
+                selectPrompt: 'Select a chapter on the left to read its story script.',
+                loadingStory: id => `⏳ Downloading the Chinese & English scripts for stage [ ${id} ]...`,
+                loadFail: msg => `❌ [Load failed]<br><br>${msg}`,
+                noLangStory: '(No script available for this chapter in this language)',
+                noResults: 'No matching chapters',
+                newBadge: 'NEW'
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') ||
+            (navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
+        if (!I18N[currentLang]) currentLang = 'zh';
+        const t = () => I18N[currentLang];
+
         let currentLoadingId = null;
-        let currentStories = { zh: '', en: '' }; 
+        let currentStories = { zh: '', en: '' };
+        let floorNames = { zh: {}, en: {} };
+        let floorCount = 0;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadFloorList();
-            document.getElementById('lang-selector').addEventListener('change', (e) => {
-                renderCurrentStory(e.target.value);
-            });
-        });
+        // 以「函式」記錄目前狀態與劇本區內容，切換語言時重新產生文字
+        let statusState = { cls: 'loading', render: () => t().connecting };
+        let viewerState = { type: 'prompt' };   // prompt | loading | story | error
 
-        // 取得本地瀏覽器紀錄的已讀/已知 Floors
-        function getKnownFloors() {
-            const saved = localStorage.getItem('known_floors');
-            return saved ? JSON.parse(saved) : [];
+        function getFloorLabel(floorId, lang = currentLang) {
+            const name = floorNames[lang][floorId] || floorNames.zh[floorId];
+            return name ? `${floorId} - ${name}` : String(floorId);
         }
 
-        // 儲存新的 Floor 到本地紀錄
-        function saveKnownFloors(floorsArray) {
-            localStorage.setItem('known_floors', JSON.stringify(floorsArray));
+        function setStatus(cls, render) {
+            statusState = { cls, render };
+            renderStatus();
+        }
+        function renderStatus() {
+            const el = document.getElementById('status');
+            el.className = statusState.cls;
+            el.innerText = statusState.render();
         }
 
-        async function loadFloorList() {
-            const statusDiv = document.getElementById('status');
-            const floorList = document.getElementById('floor-list');
-            
-            try {
-                const response = await fetch(`${BASE_API}/floors`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const names = result.names || {};
-                    const currentFloors = result.floors || [];
-                    
-                    // 抓出瀏覽器紀錄
-                    let knownFloors = getKnownFloors();
-                    const knownSet = new Set(knownFloors);
-                    
-                    // 找出哪些是未曾見過的 NEW 關卡
-                    const newFloors = currentFloors.filter(fid => !knownSet.has(fid));
-                    
-                    // 如果是第一次使用（紀錄是空的），把當前所有關卡存入紀錄
-                    if (knownFloors.length === 0) {
-                        saveKnownFloors(currentFloors);
-                    }
-
-                    statusDiv.className = 'success';
-                    statusDiv.innerText = `選單成功！共 ${currentFloors.length} 章`;//+ (newFloors.length > 0 ? ` (發現 ${newFloors.length} 個新關卡！)` : '');
-                    
-                    floorList.innerHTML = ''; 
-                    currentFloors.forEach((floorId, index) => {
-                        const li = document.createElement('li');
-                        
-                        const name = names[floorId];
-                        const textSpan = document.createElement('span');
-                        textSpan.innerText = name ? `${floorId} - ${name}` : floorId;
-                        li.appendChild(textSpan);
-
-                        // 如果不在已知紀錄中，標示 NEW
-                        if (!knownSet.has(floorId) && knownFloors.length > 0) {
-                            const badge = document.createElement('span');
-                            badge.className = 'badge-new';
-                            badge.innerText = 'NEW';
-                            badge.id = `badge-${floorId}`;
-                            li.appendChild(badge);
-                        }
-
-                        li.addEventListener('click', () => {
-                            document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
-                            li.classList.add('active');
-                            
-                            // 點擊關卡後，標記為已讀並移除 NEW 標籤
-                            markFloorAsKnown(floorId);
-                            
-                            loadStoryFromServer(floorId);
-                        });
-                        
-                        floorList.appendChild(li);
-                        if(index === 0) li.click();
-                    });
-                } else { throw new Error(result.error); }
-            } catch (error) {
-                statusDiv.className = 'error';
-                statusDiv.innerText = `初始化失敗：${error.message}`;
+        function renderViewer() {
+            const viewer = document.getElementById('story-viewer');
+            const v = viewerState;
+            if (v.type === 'prompt') {
+                viewer.innerHTML = `<div class="no-story">${t().selectPrompt}</div>`;
+            } else if (v.type === 'loading') {
+                viewer.innerHTML = `<div class="no-story">${t().loadingStory(v.id)}</div>`;
+            } else if (v.type === 'error') {
+                viewer.innerHTML = `<div class="no-story err">${t().loadFail(v.msg)}</div>`;
+            } else if (v.type === 'story') {
+                if (currentStories[currentLang]) {
+                    viewer.innerHTML = currentStories[currentLang];
+                } else {
+                    viewer.innerHTML = `<div class="no-story">${t().noLangStory}</div>`;
+                }
             }
         }
 
-        // 將特定 Floor 標記為已知並消除 NEW 徽章
+        // ===== 套用語言到整個介面 =====
+        function applyLang(lang, { keepScroll = false } = {}) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.getElementById('lang-selector').value = lang;
+            document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
+            document.title = t().pageTitle;
+            document.getElementById('sidebar-title').innerText = t().chapterList;
+            document.getElementById('search').placeholder = t().searchPlaceholder;
+
+            document.querySelectorAll('#floor-list li[data-floor-id]').forEach(li => {
+                li.querySelector('.floor-title').innerText = getFloorLabel(li.dataset.floorId);
+                const badge = li.querySelector('.badge-new');
+                if (badge) badge.innerText = t().newBadge;
+            });
+            renderStatus();
+            const viewer = document.getElementById('story-viewer');
+            const top = viewer.scrollTop;
+            renderViewer();
+            viewer.scrollTop = keepScroll ? top : 0;
+            filterFloors();
+        }
+
+        // ===== 搜尋 =====
+        function filterFloors() {
+            const q = document.getElementById('search').value.trim().toLowerCase();
+            const list = document.getElementById('floor-list');
+            let visible = 0;
+            list.querySelectorAll('li[data-floor-id]').forEach(li => {
+                const id = li.dataset.floorId;
+                const hay = `${id} ${floorNames.zh[id] || ''} ${floorNames.en[id] || ''}`.toLowerCase();
+                const show = !q || hay.includes(q);
+                li.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+            let hint = document.getElementById('empty-hint');
+            if (floorCount > 0 && visible === 0) {
+                if (!hint) {
+                    hint = document.createElement('li');
+                    hint.id = 'empty-hint';
+                    hint.className = 'empty-hint';
+                    list.appendChild(hint);
+                }
+                hint.innerText = t().noResults;
+            } else if (hint) {
+                hint.remove();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('lang-selector').addEventListener('change', e => applyLang(e.target.value));
+            document.getElementById('search').addEventListener('input', filterFloors);
+            applyLang(currentLang);
+            loadFloorList();
+        });
+
+        // ===== NEW 標籤的本地紀錄 =====
+        function getKnownFloors() {
+            try { return JSON.parse(localStorage.getItem('known_floors')) || []; } catch { return []; }
+        }
+        function saveKnownFloors(arr) {
+            localStorage.setItem('known_floors', JSON.stringify(arr));
+        }
+
+        async function loadFloorList() {
+            const floorList = document.getElementById('floor-list');
+            try {
+                const response = await fetch(`${BASE_API}/floors`);
+                const result = await response.json();
+                if (!result.success) throw new Error(result.error);
+
+                floorNames.zh = result.names || {};
+                floorNames.en = result.names_en || {};
+                const currentFloors = result.floors || [];
+                floorCount = currentFloors.length;
+
+                const knownFloors = getKnownFloors();
+                const knownSet = new Set(knownFloors);
+                if (knownFloors.length === 0) saveKnownFloors(currentFloors);
+
+                setStatus('success', () => t().menuOk(floorCount));
+
+                floorList.innerHTML = '';
+                currentFloors.forEach((floorId, index) => {
+                    const li = document.createElement('li');
+                    li.dataset.floorId = floorId;
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'floor-title';
+                    textSpan.innerText = getFloorLabel(floorId);
+                    li.appendChild(textSpan);
+
+                    if (!knownSet.has(floorId) && knownFloors.length > 0) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge-new';
+                        badge.innerText = t().newBadge;
+                        badge.id = `badge-${floorId}`;
+                        li.appendChild(badge);
+                    }
+
+                    li.addEventListener('click', () => {
+                        document.querySelectorAll('#floor-list li').forEach(el => el.classList.remove('active'));
+                        li.classList.add('active');
+                        markFloorAsKnown(floorId);
+                        loadStoryFromServer(floorId);
+                    });
+
+                    floorList.appendChild(li);
+                    if (index === 0) li.click();
+                });
+                filterFloors();
+            } catch (error) {
+                setStatus('error', () => t().initFail(error.message));
+            }
+        }
+
         function markFloorAsKnown(floorId) {
-            let knownFloors = getKnownFloors();
+            const knownFloors = getKnownFloors();
             if (!knownFloors.includes(floorId)) {
                 knownFloors.push(floorId);
                 saveKnownFloors(knownFloors);
-                
-                // 動態移除 UI 上的 NEW 標籤
                 const badge = document.getElementById(`badge-${floorId}`);
                 if (badge) badge.remove();
             }
         }
 
         async function loadStoryFromServer(floorId) {
-            const viewer = document.getElementById('story-viewer');
             currentLoadingId = floorId;
-            viewer.innerHTML = `<div class="no-story">⏳ 正在從官方即時下載關卡 [ ${floorId} ] 的中英文劇本...</div>`;
-            
+            viewerState = { type: 'loading', id: floorId };
+            renderViewer();
+
             try {
                 const response = await fetch(`${BASE_API}/story/${floorId}`);
                 const result = await response.json();
-                
                 if (currentLoadingId !== floorId) return;
+                if (!result.success) throw new Error(result.error);
 
-                if (result.success) {
-                    currentStories.zh = result.zh;
-                    currentStories.en = result.en;
-                    const currentLang = document.getElementById('lang-selector').value;
-                    renderCurrentStory(currentLang);
-                } else { throw new Error(result.error); }
+                currentStories.zh = result.zh;
+                currentStories.en = result.en;
+                viewerState = { type: 'story' };
+                renderViewer();
+                document.getElementById('story-viewer').scrollTop = 0;
             } catch (error) {
                 if (currentLoadingId !== floorId) return;
-                viewer.innerHTML = `<div class="no-story" style="color:#d32f2f;">❌【讀取失敗】<br><br>${error.message}</div>`;
-            }
-        }
-
-        function renderCurrentStory(lang) {
-            const viewer = document.getElementById('story-viewer');
-            if (currentStories[lang]) {
-                viewer.innerHTML = currentStories[lang];
-                viewer.scrollTop = 0;
-            } else {
-                viewer.innerHTML = `<div class="no-story">(該章節無此語言劇本內容)</div>`;
+                viewerState = { type: 'error', msg: error.message };
+                renderViewer();
             }
         }
     </script>
