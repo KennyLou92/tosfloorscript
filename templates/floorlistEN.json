@@ -16744,10 +16744,6 @@
         "名稱": "In the Name of Charlouette"
     },
     {
-        "floorid": "8277",
-        "名稱": "Dimensional Fractures - Calamitous Stage"
-    },
-    {
         "floorid": "8278",
         "名稱": "Unfathomable Chaos - Calamitous Stage"
     },
@@ -28636,6 +28632,10 @@
         "名稱": "An Irresistible Invitation"
     },
     {
+        "floorid": "14347",
+        "名稱": "In the Abyss of Madness - Calamitous Stage"
+    },
+    {
         "floorid": "14370",
         "名稱": "Hei Jiajia Amelioration 1"
     },
@@ -33180,12 +33180,220 @@
         "名稱": "Yami Marik & The Winged Dragon of Ra Amelioration 4"
     },
     {
+        "floorid": "17025",
+        "名稱": "Mori Ranmaru Amelioration 1"
+    },
+    {
+        "floorid": "17026",
+        "名稱": "Mori Ranmaru Amelioration 2"
+    },
+    {
+        "floorid": "17027",
+        "名稱": "Mori Ranmaru Amelioration 3"
+    },
+    {
+        "floorid": "17028",
+        "名稱": "Mori Ranmaru Amelioration 4"
+    },
+    {
+        "floorid": "17029",
+        "名稱": "Kanon Amelioration 1"
+    },
+    {
+        "floorid": "17030",
+        "名稱": "Kanon Amelioration 2"
+    },
+    {
+        "floorid": "17031",
+        "名稱": "Kanon Amelioration 3"
+    },
+    {
+        "floorid": "17032",
+        "名稱": "Kanon Amelioration 4"
+    },
+    {
+        "floorid": "17033",
+        "名稱": "Izumo Amelioration 1"
+    },
+    {
+        "floorid": "17034",
+        "名稱": "Izumo Amelioration 2"
+    },
+    {
+        "floorid": "17035",
+        "名稱": "Izumo Amelioration 3"
+    },
+    {
+        "floorid": "17036",
+        "名稱": "Izumo Amelioration 4"
+    },
+    {
+        "floorid": "17037",
+        "名稱": "Mochi Amelioration 1"
+    },
+    {
+        "floorid": "17038",
+        "名稱": "Mochi Amelioration 2"
+    },
+    {
+        "floorid": "17039",
+        "名稱": "Mochi Amelioration 3"
+    },
+    {
+        "floorid": "17040",
+        "名稱": "Mochi Amelioration 4"
+    },
+    {
+        "floorid": "17041",
+        "名稱": "Kagurazaka Amelioration 1"
+    },
+    {
+        "floorid": "17042",
+        "名稱": "Kagurazaka Amelioration 2"
+    },
+    {
+        "floorid": "17043",
+        "名稱": "Kagurazaka Amelioration 3"
+    },
+    {
+        "floorid": "17044",
+        "名稱": "Kagurazaka Amelioration 4"
+    },
+    {
+        "floorid": "17045",
+        "名稱": "Tomozou Amelioration 1"
+    },
+    {
+        "floorid": "17046",
+        "名稱": "Tomozou Amelioration 2"
+    },
+    {
+        "floorid": "17047",
+        "名稱": "Tomozou Amelioration 3"
+    },
+    {
+        "floorid": "17048",
+        "名稱": "Tomozou Amelioration 4"
+    },
+    {
+        "floorid": "17132",
+        "名稱": "Chapter 1 Roar from the Depths of the Ruins"
+    },
+    {
+        "floorid": "17133",
+        "名稱": "Chapter 1 Roar from the Depths of the Ruins Battle"
+    },
+    {
+        "floorid": "17134",
+        "名稱": "Chapter 2 Resonance of Powers"
+    },
+    {
+        "floorid": "17135",
+        "名稱": "Chapter 3 A Vow to Protect"
+    },
+    {
+        "floorid": "17136",
+        "名稱": "Chapter 3 A Vow to Protect Battle"
+    },
+    {
+        "floorid": "17137",
+        "名稱": "Chapter 4 A Light Beyond Reach"
+    },
+    {
+        "floorid": "17138",
+        "名稱": "Chapter 5 Seeds of Jealousy"
+    },
+    {
+        "floorid": "17139",
+        "名稱": "Chapter 6 Whispers of the Black Witch"
+    },
+    {
+        "floorid": "17140",
+        "名稱": "Chapter 6 Whispers of the Black Witch Battle"
+    },
+    {
+        "floorid": "17141",
+        "名稱": "Chapter 7 The Great Divide"
+    },
+    {
+        "floorid": "17142",
+        "名稱": "Chapter 8 Witchhaven"
+    },
+    {
+        "floorid": "17143",
+        "名稱": "Chapter 9 Night of the Full Moon"
+    },
+    {
+        "floorid": "17144",
+        "名稱": "Chapter 10 Two Suspects"
+    },
+    {
+        "floorid": "17145",
+        "名稱": "Chapter 11 Witches from the Future"
+    },
+    {
+        "floorid": "17146",
+        "名稱": "Chapter 12 The Attack"
+    },
+    {
+        "floorid": "17147",
+        "名稱": "Chapter 12 The Attack Battle"
+    },
+    {
+        "floorid": "17148",
+        "名稱": "Chapter 13 A Scheme in the Shadows"
+    },
+    {
+        "floorid": "17149",
+        "名稱": "Chapter 14 A Long-Awaited Reunion"
+    },
+    {
+        "floorid": "17150",
+        "名稱": "Chapter 15 The Rift Between Realms"
+    },
+    {
+        "floorid": "17151",
+        "名稱": "Chapter 15 The Rift Between Realms Battle"
+    },
+    {
+        "floorid": "17152",
+        "名稱": "Chapter 16 The Blessing of Sacred Prophecy"
+    },
+    {
+        "floorid": "17153",
+        "名稱": "Chapter 17 Hurt"
+    },
+    {
+        "floorid": "17154",
+        "名稱": "Chapter 17 Hurt Battle"
+    },
+    {
+        "floorid": "17155",
+        "名稱": "Chapter 18 Defying Fate"
+    },
+    {
+        "floorid": "17156",
+        "名稱": "Chapter 19 The Witches Unite"
+    },
+    {
+        "floorid": "17157",
+        "名稱": "Chapter 19 The Witches Unite Battle"
+    },
+    {
+        "floorid": "17158",
+        "名稱": "Chapter 20 The Future That Awaits"
+    },
+    {
         "floorid": "14445",
         "名稱": "An Opportunity for Growth"
     },
     {
         "floorid": "17167",
         "名稱": "Blessings That Wash Away the Woes of Fate"
+    },
+    {
+        "floorid": "13033",
+        "名稱": "An Opportunity for Growth"
     },
     {
         "floorid": "6044",
@@ -33296,8 +33504,12 @@
         "名稱": "Challenge Mission LV.10"
     },
     {
-        "floorid": "13033",
-        "名稱": "An Opportunity for Growth"
+        "floorid": "15912",
+        "名稱": "Challenge Mission Extra 1"
+    },
+    {
+        "floorid": "15913",
+        "名稱": "Challenge Mission Extra 2"
     },
     {
         "floorid": "16918",
@@ -33424,12 +33636,16 @@
         "名稱": "Jawed Traps Hidden in the Dark - Extra"
     },
     {
-        "floorid": "5061",
-        "名稱": "Collection of Light Soulstones"
+        "floorid": "5063",
+        "名稱": "Collection of Shadow Soulstones"
     },
     {
-        "floorid": "5062",
-        "名稱": "Collection of Light Soulstones - EX"
+        "floorid": "5064",
+        "名稱": "Collection of Shadow Soulstones - EX"
+    },
+    {
+        "floorid": "16730",
+        "名稱": "Gifts for the Witches I"
     },
     {
         "floorid": "3527",
@@ -33552,10 +33768,6 @@
         "名稱": "Build the Best Secret Base"
     },
     {
-        "floorid": "8935",
-        "名稱": "Weekday Material Stage"
-    },
-    {
         "floorid": "16914",
         "名稱": "The Final Act of Loyalty - Rehearsal"
     },
@@ -33586,5 +33798,9 @@
     {
         "floorid": "16909",
         "名稱": "The Creator of Duel Monsters - Ultimate"
+    },
+    {
+        "floorid": "15608",
+        "名稱": "Unquenchable Flame of Dreams - Ultimate"
     }
 ]
