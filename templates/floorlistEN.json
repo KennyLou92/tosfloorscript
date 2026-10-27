@@ -16744,10 +16744,6 @@
         "名稱": "In the Name of Charlouette"
     },
     {
-        "floorid": "8278",
-        "名稱": "Unfathomable Chaos - Calamitous Stage"
-    },
-    {
         "floorid": "8280",
         "名稱": "Fight against Shamash 1-1"
     },
@@ -28632,10 +28628,6 @@
         "名稱": "An Irresistible Invitation"
     },
     {
-        "floorid": "14347",
-        "名稱": "In the Abyss of Madness - Calamitous Stage"
-    },
-    {
         "floorid": "14370",
         "名稱": "Hei Jiajia Amelioration 1"
     },
@@ -29990,6 +29982,102 @@
     {
         "floorid": "15178",
         "名稱": "Indelible Scars of the Past"
+    },
+    {
+        "floorid": "15179",
+        "名稱": "Conan Doyle Amelioration 1"
+    },
+    {
+        "floorid": "15180",
+        "名稱": "Conan Doyle Amelioration 2"
+    },
+    {
+        "floorid": "15181",
+        "名稱": "Conan Doyle Amelioration 3"
+    },
+    {
+        "floorid": "15182",
+        "名稱": "Conan Doyle Amelioration 4"
+    },
+    {
+        "floorid": "15183",
+        "名稱": "Agatha Amelioration 1"
+    },
+    {
+        "floorid": "15184",
+        "名稱": "Agatha Amelioration 2"
+    },
+    {
+        "floorid": "15185",
+        "名稱": "Agatha Amelioration 3"
+    },
+    {
+        "floorid": "15186",
+        "名稱": "Agatha Amelioration 4"
+    },
+    {
+        "floorid": "15187",
+        "名稱": "Watson Amelioration 1"
+    },
+    {
+        "floorid": "15188",
+        "名稱": "Watson Amelioration 2"
+    },
+    {
+        "floorid": "15189",
+        "名稱": "Watson Amelioration 3"
+    },
+    {
+        "floorid": "15190",
+        "名稱": "Watson Amelioration 4"
+    },
+    {
+        "floorid": "15191",
+        "名稱": "Moriarty Amelioration 1"
+    },
+    {
+        "floorid": "15192",
+        "名稱": "Moriarty Amelioration 2"
+    },
+    {
+        "floorid": "15193",
+        "名稱": "Moriarty Amelioration 3"
+    },
+    {
+        "floorid": "15194",
+        "名稱": "Moriarty Amelioration 4"
+    },
+    {
+        "floorid": "15195",
+        "名稱": "Clark Amelioration 1"
+    },
+    {
+        "floorid": "15196",
+        "名稱": "Clark Amelioration 2"
+    },
+    {
+        "floorid": "15197",
+        "名稱": "Clark Amelioration 3"
+    },
+    {
+        "floorid": "15198",
+        "名稱": "Clark Amelioration 4"
+    },
+    {
+        "floorid": "15199",
+        "名稱": "Cox Amelioration 1"
+    },
+    {
+        "floorid": "15200",
+        "名稱": "Cox Amelioration 2"
+    },
+    {
+        "floorid": "15201",
+        "名稱": "Cox Amelioration 3"
+    },
+    {
+        "floorid": "15202",
+        "名稱": "Cox Amelioration 4"
     },
     {
         "floorid": "15203",
@@ -32880,98 +32968,6 @@
         "名稱": "Caesar Amelioration 4"
     },
     {
-        "floorid": "16844",
-        "名稱": "Showdown! VS. Téa Gardner & Dark Magician Girl"
-    },
-    {
-        "floorid": "16845",
-        "名稱": "Showdown! VS. Bandit Keith & Barrel Dragon"
-    },
-    {
-        "floorid": "16846",
-        "名稱": "Showdown! VS. Maximillion Pegasus & Thousand-Eyes Restrict"
-    },
-    {
-        "floorid": "16847",
-        "名稱": "Showdown! VS. Yugi Muto & Gandora the Dragon of Destruction"
-    },
-    {
-        "floorid": "16848",
-        "名稱": "Showdown! VS. Weevil Underwood & Insect Queen"
-    },
-    {
-        "floorid": "16849",
-        "名稱": "Showdown! VS. Mako Tsunami & The Legendary Fisherman"
-    },
-    {
-        "floorid": "16850",
-        "名稱": "Showdown! VS. Espa Roba & Jinzo"
-    },
-    {
-        "floorid": "16851",
-        "名稱": "Showdown! VS. Joey Wheeler & Red-Eyes Black Dragon"
-    },
-    {
-        "floorid": "16852",
-        "名稱": "Showdown! VS. Arkana & Dark Magician"
-    },
-    {
-        "floorid": "16853",
-        "名稱": "Showdown! VS. Lumis & Umbra & Masked Beast Des Gardius"
-    },
-    {
-        "floorid": "16854",
-        "名稱": "Showdown! VS. Seto Kaiba & Blue-Eyes White Dragon"
-    },
-    {
-        "floorid": "16855",
-        "名稱": "Showdown! VS. Yami Yugi & Dark Magician"
-    },
-    {
-        "floorid": "16856",
-        "名稱": "Showdown! VS. Yugi Muto & Silent Magician LV8"
-    },
-    {
-        "floorid": "16865",
-        "名稱": "Showdown! VS. Téa Gardner & Dark Magician Girl"
-    },
-    {
-        "floorid": "16866",
-        "名稱": "A Duelist's Training"
-    },
-    {
-        "floorid": "16867",
-        "名稱": "Showdown! VS. Mai Valentine & Harpie Lady Sisters"
-    },
-    {
-        "floorid": "16868",
-        "名稱": "Showdown! VS. Ishizu Ishtar"
-    },
-    {
-        "floorid": "16869",
-        "名稱": "Showdown! VS. Yami Bakura & Dark Necrofear"
-    },
-    {
-        "floorid": "16870",
-        "名稱": "Showdown! VS. Odion & Mystical Beast of Serket"
-    },
-    {
-        "floorid": "16871",
-        "名稱": "Showdown! VS. Joey Wheeler & Gilford the Lightning"
-    },
-    {
-        "floorid": "16872",
-        "名稱": "Showdown! VS. Seto Kaiba & Obelisk the Tormentor"
-    },
-    {
-        "floorid": "16873",
-        "名稱": "Showdown! VS. Yami Marik & The Winged Dragon of Ra"
-    },
-    {
-        "floorid": "16874",
-        "名稱": "Showdown! VS. Yami Yugi & Slifer the Sky Dragon"
-    },
-    {
         "floorid": "16877",
         "名稱": "The Magic of Divination - Ultimate"
     },
@@ -33018,10 +33014,6 @@
     {
         "floorid": "16888",
         "名稱": "When Justice Dies"
-    },
-    {
-        "floorid": "16890",
-        "名稱": "Gate to the Aperture - Kuriboh"
     },
     {
         "floorid": "16921",
@@ -33180,6 +33172,42 @@
         "名稱": "Yami Marik & The Winged Dragon of Ra Amelioration 4"
     },
     {
+        "floorid": "16966",
+        "名稱": "Gate to the Aperture - Lensie"
+    },
+    {
+        "floorid": "17017",
+        "名稱": "Li Ji's Protection"
+    },
+    {
+        "floorid": "17018",
+        "名稱": "Eve's Test"
+    },
+    {
+        "floorid": "17019",
+        "名稱": "Longyang Jun's Fluttering Heart"
+    },
+    {
+        "floorid": "17020",
+        "名稱": "Wu Zetian's Pride"
+    },
+    {
+        "floorid": "17021",
+        "名稱": "Cleo's Persistence"
+    },
+    {
+        "floorid": "17022",
+        "名稱": "Bao Si's Epiphany"
+    },
+    {
+        "floorid": "17023",
+        "名稱": "Yang Yuhuan's Grief"
+    },
+    {
+        "floorid": "17024",
+        "名稱": "Mo Xi's Scheme"
+    },
+    {
         "floorid": "17025",
         "名稱": "Mori Ranmaru Amelioration 1"
     },
@@ -33274,6 +33302,134 @@
     {
         "floorid": "17048",
         "名稱": "Tomozou Amelioration 4"
+    },
+    {
+        "floorid": "17049",
+        "名稱": "Li Ji Amelioration 1"
+    },
+    {
+        "floorid": "17050",
+        "名稱": "Li Ji Amelioration 2"
+    },
+    {
+        "floorid": "17051",
+        "名稱": "Li Ji Amelioration 3"
+    },
+    {
+        "floorid": "17052",
+        "名稱": "Li Ji Amelioration 4"
+    },
+    {
+        "floorid": "17053",
+        "名稱": "Eve Amelioration 1"
+    },
+    {
+        "floorid": "17054",
+        "名稱": "Eve Amelioration 2"
+    },
+    {
+        "floorid": "17055",
+        "名稱": "Eve Amelioration 3"
+    },
+    {
+        "floorid": "17056",
+        "名稱": "Eve Amelioration 4"
+    },
+    {
+        "floorid": "17057",
+        "名稱": "Longyang Jun Amelioration 1"
+    },
+    {
+        "floorid": "17058",
+        "名稱": "Longyang Jun Amelioration 2"
+    },
+    {
+        "floorid": "17059",
+        "名稱": "Longyang Jun Amelioration 3"
+    },
+    {
+        "floorid": "17060",
+        "名稱": "Longyang Jun Amelioration 4"
+    },
+    {
+        "floorid": "17061",
+        "名稱": "Wu Zetian Amelioration 1"
+    },
+    {
+        "floorid": "17062",
+        "名稱": "Wu Zetian Amelioration 2"
+    },
+    {
+        "floorid": "17063",
+        "名稱": "Wu Zetian Amelioration 3"
+    },
+    {
+        "floorid": "17064",
+        "名稱": "Wu Zetian Amelioration 4"
+    },
+    {
+        "floorid": "17065",
+        "名稱": "Cleo Amelioration 1"
+    },
+    {
+        "floorid": "17066",
+        "名稱": "Cleo Amelioration 2"
+    },
+    {
+        "floorid": "17067",
+        "名稱": "Cleo Amelioration 3"
+    },
+    {
+        "floorid": "17068",
+        "名稱": "Cleo Amelioration 4"
+    },
+    {
+        "floorid": "17069",
+        "名稱": "Bao Si Amelioration 1"
+    },
+    {
+        "floorid": "17070",
+        "名稱": "Bao Si Amelioration 2"
+    },
+    {
+        "floorid": "17071",
+        "名稱": "Bao Si Amelioration 3"
+    },
+    {
+        "floorid": "17072",
+        "名稱": "Bao Si Amelioration 4"
+    },
+    {
+        "floorid": "17073",
+        "名稱": "Yang Yuhuan Amelioration 1"
+    },
+    {
+        "floorid": "17074",
+        "名稱": "Yang Yuhuan Amelioration 2"
+    },
+    {
+        "floorid": "17075",
+        "名稱": "Yang Yuhuan Amelioration 3"
+    },
+    {
+        "floorid": "17076",
+        "名稱": "Yang Yuhuan Amelioration 4"
+    },
+    {
+        "floorid": "17077",
+        "名稱": "Mo Xi Amelioration 1"
+    },
+    {
+        "floorid": "17078",
+        "名稱": "Mo Xi Amelioration 2"
+    },
+    {
+        "floorid": "17079",
+        "名稱": "Mo Xi Amelioration 3"
+    },
+    {
+        "floorid": "17080",
+        "名稱": "Mo Xi Amelioration 4"
     },
     {
         "floorid": "17132",
@@ -33388,12 +33544,108 @@
         "名稱": "An Opportunity for Growth"
     },
     {
-        "floorid": "17167",
-        "名稱": "Blessings That Wash Away the Woes of Fate"
+        "floorid": "15914",
+        "名稱": "Challenge Mission LV.1"
     },
     {
-        "floorid": "13033",
-        "名稱": "An Opportunity for Growth"
+        "floorid": "15915",
+        "名稱": "Challenge Mission LV.2"
+    },
+    {
+        "floorid": "15916",
+        "名稱": "Challenge Mission LV.3"
+    },
+    {
+        "floorid": "15917",
+        "名稱": "Challenge Mission LV.4"
+    },
+    {
+        "floorid": "15918",
+        "名稱": "Challenge Mission LV.5"
+    },
+    {
+        "floorid": "15919",
+        "名稱": "Challenge Mission LV.6"
+    },
+    {
+        "floorid": "15920",
+        "名稱": "Challenge Mission LV.7"
+    },
+    {
+        "floorid": "15921",
+        "名稱": "Challenge Mission LV.8"
+    },
+    {
+        "floorid": "15922",
+        "名稱": "Challenge Mission LV.9"
+    },
+    {
+        "floorid": "15923",
+        "名稱": "Challenge Mission LV.10"
+    },
+    {
+        "floorid": "15924",
+        "名稱": "Challenge Mission Extra 1"
+    },
+    {
+        "floorid": "15925",
+        "名稱": "Challenge Mission Extra 2"
+    },
+    {
+        "floorid": "15902",
+        "名稱": "Challenge Mission LV.1"
+    },
+    {
+        "floorid": "15903",
+        "名稱": "Challenge Mission LV.2"
+    },
+    {
+        "floorid": "15904",
+        "名稱": "Challenge Mission LV.3"
+    },
+    {
+        "floorid": "15905",
+        "名稱": "Challenge Mission LV.4"
+    },
+    {
+        "floorid": "15906",
+        "名稱": "Challenge Mission LV.5"
+    },
+    {
+        "floorid": "15907",
+        "名稱": "Challenge Mission LV.6"
+    },
+    {
+        "floorid": "15908",
+        "名稱": "Challenge Mission LV.7"
+    },
+    {
+        "floorid": "15909",
+        "名稱": "Challenge Mission LV.8"
+    },
+    {
+        "floorid": "15910",
+        "名稱": "Challenge Mission LV.9"
+    },
+    {
+        "floorid": "15911",
+        "名稱": "Challenge Mission LV.10"
+    },
+    {
+        "floorid": "15912",
+        "名稱": "Challenge Mission Extra 1"
+    },
+    {
+        "floorid": "15913",
+        "名稱": "Challenge Mission Extra 2"
+    },
+    {
+        "floorid": "12960",
+        "名稱": "Simulation Training"
+    },
+    {
+        "floorid": "8790",
+        "名稱": "Practice Makes Perfect II"
     },
     {
         "floorid": "6044",
@@ -33456,196 +33708,212 @@
         "名稱": "Pattern of Stars - Earth"
     },
     {
-        "floorid": "8790",
-        "名稱": "Practice Makes Perfect II"
+        "floorid": "13033",
+        "名稱": "An Opportunity for Growth"
     },
     {
-        "floorid": "12960",
-        "名稱": "Simulation Training"
+        "floorid": "17169",
+        "名稱": "Charting the Map in Ruins"
     },
     {
-        "floorid": "15902",
-        "名稱": "Challenge Mission LV.1"
+        "floorid": "17168",
+        "名稱": "A Party Beneath the Pumpkin Glow"
     },
     {
-        "floorid": "15903",
-        "名稱": "Challenge Mission LV.2"
+        "floorid": "17002",
+        "名稱": "Distortion of Worldly Laws"
     },
     {
-        "floorid": "15904",
-        "名稱": "Challenge Mission LV.3"
+        "floorid": "16997",
+        "名稱": "The Fairest Brings the Deepest Ruin Lv.1"
     },
     {
-        "floorid": "15905",
-        "名稱": "Challenge Mission LV.4"
+        "floorid": "16998",
+        "名稱": "The Fairest Brings the Deepest Ruin Lv.2"
     },
     {
-        "floorid": "15906",
-        "名稱": "Challenge Mission LV.5"
+        "floorid": "16999",
+        "名稱": "The Fairest Brings the Deepest Ruin Lv.3"
     },
     {
-        "floorid": "15907",
-        "名稱": "Challenge Mission LV.6"
+        "floorid": "17000",
+        "名稱": "The Fairest Brings the Deepest Ruin Lv.4"
     },
     {
-        "floorid": "15908",
-        "名稱": "Challenge Mission LV.7"
+        "floorid": "17001",
+        "名稱": "The Fairest Brings the Deepest Ruin Lv.5"
     },
     {
-        "floorid": "15909",
-        "名稱": "Challenge Mission LV.8"
+        "floorid": "16994",
+        "名稱": "Revealing the Motive"
     },
     {
-        "floorid": "15910",
-        "名稱": "Challenge Mission LV.9"
+        "floorid": "16988",
+        "名稱": "The Witches' Song of Prophecy Lv.1"
     },
     {
-        "floorid": "15911",
-        "名稱": "Challenge Mission LV.10"
+        "floorid": "16989",
+        "名稱": "The Witches' Song of Prophecy Lv.2"
     },
     {
-        "floorid": "15912",
-        "名稱": "Challenge Mission Extra 1"
+        "floorid": "16990",
+        "名稱": "The Witches' Song of Prophecy Lv.3"
     },
     {
-        "floorid": "15913",
-        "名稱": "Challenge Mission Extra 2"
+        "floorid": "16991",
+        "名稱": "The Witches' Song of Prophecy Lv.4"
     },
     {
-        "floorid": "16918",
-        "名稱": "True Power of the God Cards - Rehearsal"
+        "floorid": "16992",
+        "名稱": "The Witches' Song of Prophecy Lv.5"
     },
     {
-        "floorid": "16920",
-        "名稱": "Where Darkness Is Awakened - Nightmare"
+        "floorid": "16993",
+        "名稱": "The Witches' Song of Prophecy Lv.6"
     },
     {
-        "floorid": "16919",
-        "名稱": "True Power of the God Cards - Calamitous"
+        "floorid": "16983",
+        "名稱": "Words that Tear Trust Apart"
     },
     {
-        "floorid": "16916",
-        "名稱": "A Spirit from Ancient Egypt - Rehearsal"
+        "floorid": "16977",
+        "名稱": "Through the Resonating Anthem of Life - Nightmare"
     },
     {
-        "floorid": "16917",
-        "名稱": "A Spirit from Ancient Egypt - Nightmare"
+        "floorid": "16976",
+        "名稱": "Laughter in the Glade - Ultimate"
     },
     {
-        "floorid": "16907",
-        "名稱": "Breaking the Absolute Fate III"
+        "floorid": "16975",
+        "名稱": "Exterminate the Ruin's Dread - Ultimate"
     },
     {
-        "floorid": "16906",
-        "名稱": "Breaking the Absolute Fate II"
+        "floorid": "16974",
+        "名稱": "A Path Through the Forgotten Woods"
     },
     {
-        "floorid": "16905",
-        "名稱": "Breaking the Absolute Fate I"
+        "floorid": "16973",
+        "名稱": "Echoes Beyond Time"
     },
     {
-        "floorid": "16904",
-        "名稱": "The True Dark Magician"
+        "floorid": "16970",
+        "名稱": "What the Tavern Knows - Basic"
     },
     {
-        "floorid": "16903",
-        "名稱": "Ambush from the Sea"
+        "floorid": "16971",
+        "名稱": "What the Tavern Knows - Interm."
     },
     {
-        "floorid": "16902",
-        "名稱": "An Ever-Growing Insect Army"
+        "floorid": "16972",
+        "名稱": "What the Tavern Knows - Advanced"
     },
     {
-        "floorid": "16900",
-        "名稱": "The Sealed One Lv.1"
+        "floorid": "16671",
+        "名稱": "Guiding Light Before the Gate - Basic"
     },
     {
-        "floorid": "16901",
-        "名稱": "The Sealed One Lv.2"
+        "floorid": "16672",
+        "名稱": "Guiding Light Before the Gate - Interm."
     },
     {
-        "floorid": "16899",
-        "名稱": "A Duel Without Honor"
+        "floorid": "16673",
+        "名稱": "Guiding Light Before the Gate - Advanced"
     },
     {
-        "floorid": "16893",
-        "名稱": "Millennium Puzzle"
+        "floorid": "15609",
+        "名稱": "On the Verge of  a Breakdown - Ultimate"
     },
     {
-        "floorid": "16894",
-        "名稱": "Seto Kaiba's Necklace"
+        "floorid": "15013",
+        "名稱": "Don't Get Caught Between the Lines"
     },
     {
-        "floorid": "16895",
-        "名稱": "Joey Wheeler's Necklace"
+        "floorid": "15012",
+        "名稱": "Deep in the Transparent Trap - Nightmare"
     },
     {
-        "floorid": "16896",
-        "名稱": "Millennium Ring"
+        "floorid": "12922",
+        "名稱": "The Lamb’s Atonement Ritual - Basic"
     },
     {
-        "floorid": "16897",
-        "名稱": "Millennium Necklace"
+        "floorid": "12923",
+        "名稱": "The Lamb’s Atonement Ritual - Interm."
     },
     {
-        "floorid": "16898",
-        "名稱": "Duel Disk"
+        "floorid": "12924",
+        "名稱": "The Lamb’s Atonement Ritual - Advanced"
     },
     {
-        "floorid": "16891",
-        "名稱": "Multiply to Victory"
+        "floorid": "12919",
+        "名稱": "Never Stray Far from the Leader - Basic"
     },
     {
-        "floorid": "16889",
-        "名稱": "The Strongest Duelist Appears"
+        "floorid": "12920",
+        "名稱": "Never Stray Far from the Leader - Interm."
     },
     {
-        "floorid": "10954",
-        "名稱": "The Not-so-cute Fraudster - Basic"
+        "floorid": "12921",
+        "名稱": "Never Stray Far from the Leader - Advanced"
     },
     {
-        "floorid": "10955",
-        "名稱": "The Not-so-cute Fraudster - Adv."
+        "floorid": "12916",
+        "名稱": "A Sentinel’s Duty - Basic"
     },
     {
-        "floorid": "10956",
-        "名稱": "The Not-so-cute Fraudster - Extra"
+        "floorid": "12917",
+        "名稱": "A Sentinel’s Duty - Interm."
     },
     {
-        "floorid": "10951",
-        "名稱": "Wildwood Intrusion - Basic"
+        "floorid": "12918",
+        "名稱": "A Sentinel’s Duty - Advanced"
     },
     {
-        "floorid": "10952",
-        "名稱": "Wildwood Intrusion - Adv."
+        "floorid": "12913",
+        "名稱": "Guarding the Frontline - Basic"
     },
     {
-        "floorid": "10953",
-        "名稱": "Wildwood Intrusion - Extra"
+        "floorid": "12914",
+        "名稱": "Guarding the Frontline - Interm."
     },
     {
-        "floorid": "10948",
-        "名稱": "Jawed Traps Hidden in the Dark - Basic"
+        "floorid": "12915",
+        "名稱": "Guarding the Frontline - Advanced"
     },
     {
-        "floorid": "10949",
-        "名稱": "Jawed Traps Hidden in the Dark - Adv."
+        "floorid": "5057",
+        "名稱": "Collection of Pyro Soulstones"
     },
     {
-        "floorid": "10950",
-        "名稱": "Jawed Traps Hidden in the Dark - Extra"
+        "floorid": "5058",
+        "名稱": "Collection of Pyro Soulstones - EX"
     },
     {
-        "floorid": "5063",
-        "名稱": "Collection of Shadow Soulstones"
+        "floorid": "9359",
+        "名稱": "Miserable Priestess Extra"
     },
     {
-        "floorid": "5064",
-        "名稱": "Collection of Shadow Soulstones - EX"
+        "floorid": "6375",
+        "名稱": "History of Greek Gods - Main Chapter 16.3 Extra"
     },
     {
-        "floorid": "16730",
-        "名稱": "Gifts for the Witches I"
+        "floorid": "6374",
+        "名稱": "History of Greek Gods - Main Chapter 15.3 Extra"
+    },
+    {
+        "floorid": "5571",
+        "名稱": "Revealation Under Vessel"
+    },
+    {
+        "floorid": "4362",
+        "名稱": "The Deep Sorrow"
+    },
+    {
+        "floorid": "7121",
+        "名稱": "Unforgettable Obsession"
+    },
+    {
+        "floorid": "4124",
+        "名稱": "Never-Ending Curse"
     },
     {
         "floorid": "3527",
@@ -33762,45 +34030,5 @@
     {
         "floorid": "3034",
         "名稱": "Sacred Land of Swords - Extra"
-    },
-    {
-        "floorid": "13425",
-        "名稱": "Build the Best Secret Base"
-    },
-    {
-        "floorid": "16914",
-        "名稱": "The Final Act of Loyalty - Rehearsal"
-    },
-    {
-        "floorid": "16915",
-        "名稱": "The Final Act of Loyalty - Ultimate"
-    },
-    {
-        "floorid": "16912",
-        "名稱": "When Light and Darkness Join Forces - Rehearsal"
-    },
-    {
-        "floorid": "16913",
-        "名稱": "When Light and Darkness Join Forces - Ultimate"
-    },
-    {
-        "floorid": "16910",
-        "名稱": "The Psychic's Illusion of Victory - Rehearsal"
-    },
-    {
-        "floorid": "16911",
-        "名稱": "The Psychic's Illusion of Victory - Ultimate"
-    },
-    {
-        "floorid": "16908",
-        "名稱": "The Creator of Duel Monsters - Rehearsal"
-    },
-    {
-        "floorid": "16909",
-        "名稱": "The Creator of Duel Monsters - Ultimate"
-    },
-    {
-        "floorid": "15608",
-        "名稱": "Unquenchable Flame of Dreams - Ultimate"
     }
 ]
