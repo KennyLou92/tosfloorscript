@@ -32320,6 +32320,70 @@
         "名稱": "Chapter 8 The Answer Battle"
     },
     {
+        "floorid": "16521",
+        "名稱": "Chapter 9 Wandering Into a Battlefield"
+    },
+    {
+        "floorid": "16522",
+        "名稱": "Chapter 9 Wandering Into a Battlefield Battle"
+    },
+    {
+        "floorid": "16523",
+        "名稱": "Chapter 10 Into the Dungeon"
+    },
+    {
+        "floorid": "16524",
+        "名稱": "Chapter 10 Into the Dungeon Battle"
+    },
+    {
+        "floorid": "16525",
+        "名稱": "Chapter 11 The Imprisoned Wolf"
+    },
+    {
+        "floorid": "16526",
+        "名稱": "Chapter 11 The Imprisoned Wolf Battle"
+    },
+    {
+        "floorid": "16527",
+        "名稱": "Chapter 12 Escape from the Dungeon"
+    },
+    {
+        "floorid": "16528",
+        "名稱": "Chapter 12 Escape from the Dungeon Battle"
+    },
+    {
+        "floorid": "16529",
+        "名稱": "Chapter 13 Heading North"
+    },
+    {
+        "floorid": "16530",
+        "名稱": "Chapter 13 Heading North Battle"
+    },
+    {
+        "floorid": "16531",
+        "名稱": "Chapter 14 Find the Leader"
+    },
+    {
+        "floorid": "16532",
+        "名稱": "Chapter 14 Find the Leader Battle"
+    },
+    {
+        "floorid": "16533",
+        "名稱": "Chapter 15 Petrogon"
+    },
+    {
+        "floorid": "16534",
+        "名稱": "Chapter 15 Petrogon Battle"
+    },
+    {
+        "floorid": "16535",
+        "名稱": "Chapter 16 Breaking the Barrier"
+    },
+    {
+        "floorid": "16536",
+        "名稱": "Chapter 16 Breaking the Barrier Battle"
+    },
+    {
         "floorid": "16546",
         "名稱": "Chapter 1 Heptara Unies' Department of Magic Battle (Hard)"
     },
@@ -32350,6 +32414,38 @@
     {
         "floorid": "16553",
         "名稱": "Chapter 8 The Answer Battle (Hard)"
+    },
+    {
+        "floorid": "16554",
+        "名稱": "Chapter 9 Wandering Into a Battlefield Battle (Hard)"
+    },
+    {
+        "floorid": "16555",
+        "名稱": "Chapter 10 Into the Dungeon Battle (Hard)"
+    },
+    {
+        "floorid": "16556",
+        "名稱": "Chapter 11 The Imprisoned Wolf Battle (Hard)"
+    },
+    {
+        "floorid": "16557",
+        "名稱": "Chapter 12 Escape from the Dungeon Battle (Hard)"
+    },
+    {
+        "floorid": "16558",
+        "名稱": "Chapter 13 Heading North Battle (Hard)"
+    },
+    {
+        "floorid": "16559",
+        "名稱": "Chapter 14 Find the Leader Battle (Hard)"
+    },
+    {
+        "floorid": "16560",
+        "名稱": "Chapter 15 Petrogon Battle (Hard)"
+    },
+    {
+        "floorid": "16561",
+        "名稱": "Chapter 16 Breaking the Barrier Battle (Hard)"
     },
     {
         "floorid": "16578",
@@ -33432,6 +33528,86 @@
         "名稱": "Mo Xi Amelioration 4"
     },
     {
+        "floorid": "17081",
+        "名稱": "Aria Amelioration 1"
+    },
+    {
+        "floorid": "17082",
+        "名稱": "Aria Amelioration 2"
+    },
+    {
+        "floorid": "17083",
+        "名稱": "Aria Amelioration 3"
+    },
+    {
+        "floorid": "17084",
+        "名稱": "Aria Amelioration 4"
+    },
+    {
+        "floorid": "17085",
+        "名稱": "Jabir Amelioration 1"
+    },
+    {
+        "floorid": "17086",
+        "名稱": "Jabir Amelioration 2"
+    },
+    {
+        "floorid": "17087",
+        "名稱": "Jabir Amelioration 3"
+    },
+    {
+        "floorid": "17088",
+        "名稱": "Jabir Amelioration 4"
+    },
+    {
+        "floorid": "17089",
+        "名稱": "Qing Gui Amelioration 1"
+    },
+    {
+        "floorid": "17090",
+        "名稱": "Qing Gui Amelioration 2"
+    },
+    {
+        "floorid": "17091",
+        "名稱": "Qing Gui Amelioration 3"
+    },
+    {
+        "floorid": "17092",
+        "名稱": "Qing Gui Amelioration 4"
+    },
+    {
+        "floorid": "17093",
+        "名稱": "Laplace Amelioration 1"
+    },
+    {
+        "floorid": "17094",
+        "名稱": "Laplace Amelioration 2"
+    },
+    {
+        "floorid": "17095",
+        "名稱": "Laplace Amelioration 3"
+    },
+    {
+        "floorid": "17096",
+        "名稱": "Laplace Amelioration 4"
+    },
+    {
+        "floorid": "17097",
+        "名稱": "Pandora Amelioration 1"
+    },
+    {
+        "floorid": "17098",
+        "名稱": "Pandora Amelioration 2"
+    },
+    {
+        "floorid": "17099",
+        "名稱": "Pandora Amelioration 3"
+    },
+    {
+        "floorid": "17100",
+        "名稱": "Pandora Amelioration 4"
+    },
+    {
         "floorid": "17132",
         "名稱": "Chapter 1 Roar from the Depths of the Ruins"
     },
@@ -33540,112 +33716,12 @@
         "名稱": "Chapter 20 The Future That Awaits"
     },
     {
+        "floorid": "17172",
+        "名稱": "懷舊關 - 5 封王"
+    },
+    {
         "floorid": "14445",
         "名稱": "An Opportunity for Growth"
-    },
-    {
-        "floorid": "15914",
-        "名稱": "Challenge Mission LV.1"
-    },
-    {
-        "floorid": "15915",
-        "名稱": "Challenge Mission LV.2"
-    },
-    {
-        "floorid": "15916",
-        "名稱": "Challenge Mission LV.3"
-    },
-    {
-        "floorid": "15917",
-        "名稱": "Challenge Mission LV.4"
-    },
-    {
-        "floorid": "15918",
-        "名稱": "Challenge Mission LV.5"
-    },
-    {
-        "floorid": "15919",
-        "名稱": "Challenge Mission LV.6"
-    },
-    {
-        "floorid": "15920",
-        "名稱": "Challenge Mission LV.7"
-    },
-    {
-        "floorid": "15921",
-        "名稱": "Challenge Mission LV.8"
-    },
-    {
-        "floorid": "15922",
-        "名稱": "Challenge Mission LV.9"
-    },
-    {
-        "floorid": "15923",
-        "名稱": "Challenge Mission LV.10"
-    },
-    {
-        "floorid": "15924",
-        "名稱": "Challenge Mission Extra 1"
-    },
-    {
-        "floorid": "15925",
-        "名稱": "Challenge Mission Extra 2"
-    },
-    {
-        "floorid": "15902",
-        "名稱": "Challenge Mission LV.1"
-    },
-    {
-        "floorid": "15903",
-        "名稱": "Challenge Mission LV.2"
-    },
-    {
-        "floorid": "15904",
-        "名稱": "Challenge Mission LV.3"
-    },
-    {
-        "floorid": "15905",
-        "名稱": "Challenge Mission LV.4"
-    },
-    {
-        "floorid": "15906",
-        "名稱": "Challenge Mission LV.5"
-    },
-    {
-        "floorid": "15907",
-        "名稱": "Challenge Mission LV.6"
-    },
-    {
-        "floorid": "15908",
-        "名稱": "Challenge Mission LV.7"
-    },
-    {
-        "floorid": "15909",
-        "名稱": "Challenge Mission LV.8"
-    },
-    {
-        "floorid": "15910",
-        "名稱": "Challenge Mission LV.9"
-    },
-    {
-        "floorid": "15911",
-        "名稱": "Challenge Mission LV.10"
-    },
-    {
-        "floorid": "15912",
-        "名稱": "Challenge Mission Extra 1"
-    },
-    {
-        "floorid": "15913",
-        "名稱": "Challenge Mission Extra 2"
-    },
-    {
-        "floorid": "12960",
-        "名稱": "Simulation Training"
-    },
-    {
-        "floorid": "8790",
-        "名稱": "Practice Makes Perfect II"
     },
     {
         "floorid": "6044",
@@ -33708,8 +33784,112 @@
         "名稱": "Pattern of Stars - Earth"
     },
     {
+        "floorid": "8790",
+        "名稱": "Practice Makes Perfect II"
+    },
+    {
         "floorid": "13033",
         "名稱": "An Opportunity for Growth"
+    },
+    {
+        "floorid": "15902",
+        "名稱": "Challenge Mission LV.1"
+    },
+    {
+        "floorid": "15903",
+        "名稱": "Challenge Mission LV.2"
+    },
+    {
+        "floorid": "15904",
+        "名稱": "Challenge Mission LV.3"
+    },
+    {
+        "floorid": "15905",
+        "名稱": "Challenge Mission LV.4"
+    },
+    {
+        "floorid": "15906",
+        "名稱": "Challenge Mission LV.5"
+    },
+    {
+        "floorid": "15907",
+        "名稱": "Challenge Mission LV.6"
+    },
+    {
+        "floorid": "15908",
+        "名稱": "Challenge Mission LV.7"
+    },
+    {
+        "floorid": "15909",
+        "名稱": "Challenge Mission LV.8"
+    },
+    {
+        "floorid": "15910",
+        "名稱": "Challenge Mission LV.9"
+    },
+    {
+        "floorid": "15911",
+        "名稱": "Challenge Mission LV.10"
+    },
+    {
+        "floorid": "15912",
+        "名稱": "Challenge Mission Extra 1"
+    },
+    {
+        "floorid": "15913",
+        "名稱": "Challenge Mission Extra 2"
+    },
+    {
+        "floorid": "15914",
+        "名稱": "Challenge Mission LV.1"
+    },
+    {
+        "floorid": "15915",
+        "名稱": "Challenge Mission LV.2"
+    },
+    {
+        "floorid": "15916",
+        "名稱": "Challenge Mission LV.3"
+    },
+    {
+        "floorid": "15917",
+        "名稱": "Challenge Mission LV.4"
+    },
+    {
+        "floorid": "15918",
+        "名稱": "Challenge Mission LV.5"
+    },
+    {
+        "floorid": "15919",
+        "名稱": "Challenge Mission LV.6"
+    },
+    {
+        "floorid": "15920",
+        "名稱": "Challenge Mission LV.7"
+    },
+    {
+        "floorid": "15921",
+        "名稱": "Challenge Mission LV.8"
+    },
+    {
+        "floorid": "15922",
+        "名稱": "Challenge Mission LV.9"
+    },
+    {
+        "floorid": "15923",
+        "名稱": "Challenge Mission LV.10"
+    },
+    {
+        "floorid": "15924",
+        "名稱": "Challenge Mission Extra 1"
+    },
+    {
+        "floorid": "15925",
+        "名稱": "Challenge Mission Extra 2"
+    },
+    {
+        "floorid": "12960",
+        "名稱": "Simulation Training"
     },
     {
         "floorid": "17169",
@@ -33808,6 +33988,10 @@
         "名稱": "What the Tavern Knows - Advanced"
     },
     {
+        "floorid": "16687",
+        "名稱": "Despair Buried Within the Heart - Ultimate"
+    },
+    {
         "floorid": "16671",
         "名稱": "Guiding Light Before the Gate - Basic"
     },
@@ -33818,10 +34002,6 @@
     {
         "floorid": "16673",
         "名稱": "Guiding Light Before the Gate - Advanced"
-    },
-    {
-        "floorid": "15609",
-        "名稱": "On the Verge of  a Breakdown - Ultimate"
     },
     {
         "floorid": "15013",
@@ -33880,40 +34060,16 @@
         "名稱": "Guarding the Frontline - Advanced"
     },
     {
-        "floorid": "5057",
-        "名稱": "Collection of Pyro Soulstones"
+        "floorid": "5063",
+        "名稱": "Collection of Shadow Soulstones"
     },
     {
-        "floorid": "5058",
-        "名稱": "Collection of Pyro Soulstones - EX"
+        "floorid": "5064",
+        "名稱": "Collection of Shadow Soulstones - EX"
     },
     {
-        "floorid": "9359",
-        "名稱": "Miserable Priestess Extra"
-    },
-    {
-        "floorid": "6375",
-        "名稱": "History of Greek Gods - Main Chapter 16.3 Extra"
-    },
-    {
-        "floorid": "6374",
-        "名稱": "History of Greek Gods - Main Chapter 15.3 Extra"
-    },
-    {
-        "floorid": "5571",
-        "名稱": "Revealation Under Vessel"
-    },
-    {
-        "floorid": "4362",
-        "名稱": "The Deep Sorrow"
-    },
-    {
-        "floorid": "7121",
-        "名稱": "Unforgettable Obsession"
-    },
-    {
-        "floorid": "4124",
-        "名稱": "Never-Ending Curse"
+        "floorid": "16730",
+        "名稱": "Gifts for the Witches I"
     },
     {
         "floorid": "3527",
@@ -34030,5 +34186,9 @@
     {
         "floorid": "3034",
         "名稱": "Sacred Land of Swords - Extra"
+    },
+    {
+        "floorid": "13425",
+        "名稱": "Build the Best Secret Base"
     }
 ]
